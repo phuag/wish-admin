@@ -20,7 +20,7 @@
         <repository>
             <id>nexus-repos</id>
             <name>Team Nexus Repository</name>
-            <url>http://172.30.2.232:8081/content/repositories/central/</url>
+            <url>http://192.168.22.6:8081/content/repositories/central/</url>
         </repository>
     </repositories>
 

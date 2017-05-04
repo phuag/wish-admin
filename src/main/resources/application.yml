@@ -3,11 +3,6 @@ name: spring-test
 server:
   port: 8086
 
-spring:
-  resources:
-    staticLocations:
-      - classpath*:frontend
-
 druid:
   url: jdbc:mariadb://localhost:3306/test
   username: root
