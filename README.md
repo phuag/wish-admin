@@ -65,6 +65,6 @@ Thanks.
     
     选择vue 2 技术，需要先编译打包前端代码，编译完成后在使用spring-boot方式启动
     
-    方式1: 在开发环境中运行Application类
+    方式1: 运行Application类
     方式2：通过spring-boot的maven插件将整个工程打成一个可运行jar包,java -jar命令运行jar
     方式3: 通过spring-boot的maven插件将整个工程打成一个war包,发布到tomcat等容器中运行
