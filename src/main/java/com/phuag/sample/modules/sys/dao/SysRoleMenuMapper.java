@@ -1,7 +1,7 @@
 package com.phuag.sample.modules.sys.dao;
 
 
-import com.phuag.sample.modules.sys.model.SysRoleMenuKey;
+import com.phuag.sample.modules.sys.domain.SysRoleMenuKey;
 
 public interface SysRoleMenuMapper {
     int deleteByPrimaryKey(SysRoleMenuKey key);

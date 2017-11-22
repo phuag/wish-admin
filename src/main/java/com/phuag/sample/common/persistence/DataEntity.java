@@ -6,12 +6,11 @@ package com.phuag.sample.common.persistence;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phuag.sample.common.utils.IdGen;
-import com.phuag.sample.modules.sys.model.SysUser;
+import com.phuag.sample.modules.sys.domain.SysUser;
 import com.phuag.sample.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Transient;
 import java.util.Date;
 
 /**

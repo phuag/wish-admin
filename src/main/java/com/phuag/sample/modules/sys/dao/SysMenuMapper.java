@@ -1,7 +1,7 @@
 package com.phuag.sample.modules.sys.dao;
 
 
-import com.phuag.sample.modules.sys.model.SysMenu;
+import com.phuag.sample.modules.sys.domain.SysMenu;
 
 import java.util.List;
 

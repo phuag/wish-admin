@@ -7,9 +7,9 @@ import store from './vuex/store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import 'font-awesome/css/font-awesome.min.css'
-import Mock from './mock'
+// import Mock from './mock'
 
-Mock.bootstrap()
+// Mock.bootstrap()
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false

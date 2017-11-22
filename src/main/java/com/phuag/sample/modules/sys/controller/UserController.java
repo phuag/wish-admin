@@ -1,16 +1,16 @@
 package com.phuag.sample.modules.sys.controller;
 
 import com.phuag.sample.common.config.Constants;
-import com.phuag.sample.common.web.ResponseMessage;
-import com.phuag.sample.modules.sys.model.SysUser;
+import com.phuag.sample.common.model.ResponseMessage;
+import com.phuag.sample.modules.sys.domain.SysUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -27,16 +27,18 @@ public class UserController {
      * 
      * @return
      */
-    @RequestMapping(value = "/me",method = RequestMethod.POST)
+    @PostMapping("/me")
     public ResponseEntity<Map<String, Object>> user() {
         SysUser principal =  (SysUser) SecurityUtils.getSubject().getPrincipal();
         log.debug("get principal @" +principal.toString());
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("username", principal.getName());
+        map.put("id", principal.getId());
+        map.put("username", principal.getLoginName());
+        map.put("name",principal.getName());
         return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/logout",method = RequestMethod.POST)
+    @PostMapping("/logout")
     public ResponseEntity<ResponseMessage> logout(){
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated()) {

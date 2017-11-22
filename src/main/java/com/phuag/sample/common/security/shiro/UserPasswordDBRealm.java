@@ -6,12 +6,11 @@ package com.phuag.sample.common.security.shiro;
 
 import com.phuag.sample.common.config.Global;
 import com.phuag.sample.common.utils.Encodes;
-import com.phuag.sample.modules.sys.model.SysRole;
-import com.phuag.sample.modules.sys.model.SysUser;
+import com.phuag.sample.modules.sys.domain.SysRole;
+import com.phuag.sample.modules.sys.domain.SysUser;
 import com.phuag.sample.modules.sys.service.SysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -20,7 +19,6 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;

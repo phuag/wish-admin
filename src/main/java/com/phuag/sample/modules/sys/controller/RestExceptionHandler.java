@@ -1,7 +1,7 @@
 package com.phuag.sample.modules.sys.controller;
 
 import com.phuag.sample.common.config.ApiErrors;
-import com.phuag.sample.common.web.ResponseMessage;
+import com.phuag.sample.common.model.ResponseMessage;
 import com.phuag.sample.exception.InvalidRequestException;
 import com.phuag.sample.exception.ResourceNotFoundException;
 import org.slf4j.Logger;

@@ -14,8 +14,11 @@ druid:
   validationQuery: SELECT 'x' FROM DUAL
 
 mybatis:
-  mapperLocations:
-    - classpath*:sqlmap/*Mapper.xml
+  configuration:
+    #开启下划线到驼峰的自动转换，将数据库字段根据驼峰规则注入到对象属性
+    map-underscore-to-camel-case: true
+#  mapperLocations:
+#    - classpath*:sqlmap/*Mapper.xml
 mapper:
   mappers: com.phuag.sample.common.persistence.BaseDao
 
@@ -25,11 +28,12 @@ pagehlper:
 
 shiro:
   realmClass: com.phuag.sample.common.security.shiro.UserPasswordDBRealm
-  loginUrl: /main.html#/login
-  successUrl: /main.html#/main
-  unauthorizedUrl: /main.html#/404
+  loginUrl: /api/login
+#  successUrl: /main.html#/main
+#  unauthorizedUrl: /main.html#/404
   filterChainDefinitions:
-     /**: anon
+     /druid/*: anon
+     swagger-ui.html*: anon
      /bower_components/**: anon
      /js/**: anon
      /css/**: anon
@@ -37,10 +41,11 @@ shiro:
      /partials/**: anon
      /i18n/**: anon
      /api/ping: anon
+     /api/login: anon
      /main.html#/register: anon
      /main.html#/login: authcBasic
      /api/me: authcBasic
-     /api/logout: logout
+#     /api/logout: logout
      /api/**: user
      /main.html#/**: user
 

@@ -220,12 +220,15 @@ public class ShiroAutoConfiguration {
         shiroFilterFactoryBean.setUnauthorizedUrl(properties.getUnauthorizedUrl());
         shiroFilterFactoryBean.setFilterChainDefinitionMap(properties.getFilterChainDefinitions());
         Map<String,Filter> filters = new LinkedHashMap<String, Filter>();
+
         BasicHttpAuthenticationFilter httpAuthenticationFilter = new BasicHttpAuthenticationFilter();
         httpAuthenticationFilter.setLoginUrl(properties.getLoginUrl());
         filters.put("authcBasic",httpAuthenticationFilter);
+
         LogoutFilter logoutFilter = new LogoutFilter();
         logoutFilter.setRedirectUrl(properties.getLoginUrl());
         filters.put("logout",logoutFilter);
+
         shiroFilterFactoryBean.setFilters(filters);
         return shiroFilterFactoryBean;
     }

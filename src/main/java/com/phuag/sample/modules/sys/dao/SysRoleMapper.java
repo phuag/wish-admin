@@ -1,7 +1,7 @@
 package com.phuag.sample.modules.sys.dao;
 
 
-import com.phuag.sample.modules.sys.model.SysRole;
+import com.phuag.sample.modules.sys.domain.SysRole;
 
 import java.util.List;
 

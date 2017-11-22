@@ -7,11 +7,14 @@ import com.phuag.sample.common.utils.SpringContextHolder;
 import com.phuag.sample.modules.sys.dao.SysMenuMapper;
 import com.phuag.sample.modules.sys.dao.SysRoleMapper;
 import com.phuag.sample.modules.sys.dao.SysUserMapper;
-import com.phuag.sample.modules.sys.model.SysMenu;
-import com.phuag.sample.modules.sys.model.SysRole;
-import com.phuag.sample.modules.sys.model.SysUser;
+import com.phuag.sample.modules.sys.domain.SysMenu;
+import com.phuag.sample.modules.sys.domain.SysRole;
+import com.phuag.sample.modules.sys.domain.SysUser;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.UnavailableSecurityManagerException;
+import org.apache.shiro.session.InvalidSessionException;
+import org.apache.shiro.subject.Subject;
 
-import java.security.Principal;
 import java.util.List;
 
 /**
@@ -108,14 +111,14 @@ public class UserUtils {
 	 * @return 取不到返回 new User()
 	 */
 	public static SysUser getUser(){
-//		Principal principal = getPrincipal();
-		Principal principal =null;
+		SysUser principal = getPrincipal();
 		if (principal!=null){
-			SysUser user = get(principal.getName());
-			if (user != null){
-				return user;
-			}
-			return new SysUser();
+			return principal;
+//			SysUser user = get(principal.getName());
+//			if (user != null){
+//				return user;
+//			}
+//			return new SysUser();
 		}
 		// 如果没有登录，则返回实例化空的User对象。
 		return new SysUser();
@@ -220,24 +223,24 @@ public class UserUtils {
 //		return SecurityUtils.getSubject();
 //	}
 //
-//	/**
-//	 * 获取当前登录者对象
-//	 */
-//	public static Principal getPrincipal(){
-//		try{
-//			Subject subject = SecurityUtils.getSubject();
-//			Principal principal = (Principal)subject.getPrincipal();
-//			if (principal != null){
-//				return principal;
-//			}
-////			subject.logout();
-//		}catch (UnavailableSecurityManagerException e) {
-//
-//		}catch (InvalidSessionException e){
-//
-//		}
-//		return null;
-//	}
+	/**
+	 * 获取当前登录者对象
+	 */
+	public static SysUser getPrincipal(){
+		try{
+			Subject subject = SecurityUtils.getSubject();
+			SysUser principal = (SysUser)subject.getPrincipal();
+			if (principal != null){
+				return principal;
+			}
+//			subject.logout();
+		}catch (UnavailableSecurityManagerException e) {
+
+		}catch (InvalidSessionException e){
+
+		}
+		return null;
+	}
 //
 //	public static Session getSession(){
 //		try{

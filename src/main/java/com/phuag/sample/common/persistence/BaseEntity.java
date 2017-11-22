@@ -4,10 +4,9 @@
 package com.phuag.sample.common.persistence;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.pagehelper.Page;
 import com.google.common.collect.Maps;
 import com.phuag.sample.common.config.Global;
-import com.phuag.sample.modules.sys.model.SysUser;
+import com.phuag.sample.modules.sys.domain.SysUser;
 import com.phuag.sample.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;

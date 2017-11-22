@@ -26,8 +26,8 @@
       return {
         logining: false,
         ruleForm2: {
-          account: 'admin',
-          checkPass: '123456'
+          account: 'thinkgem',
+          checkPass: 'admin'
         },
         rules2: {
           account: [
@@ -58,19 +58,15 @@
             let loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass }
             requestLogin(loginParams).then(data => {
               this.logining = false
-              let { msg, code, user } = data
-              if (code !== 200) {
-                this.$message({
-                  message: msg,
-                  type: 'error'
-                })
-              } else {
-                // sessionStorage.setItem('user', JSON.stringify(user));
-                let data = { token: base64.encode(loginParams.username + ':' + loginParams.password), user: user }
-                store.commit(types.LOGIN, data)
-                console.log(store.state.user.name)
-                router.push({ path: '/table' })
-              }
+              let user = data
+
+              // sessionStorage.setItem('user', JSON.stringify(user));
+              let tokenData = { token: base64.encode(loginParams.username + ':' + loginParams.password), user: user }
+              store.commit(types.LOGIN, tokenData)
+              console.log(store.state.user)
+              router.push({ path: '/' })
+            }).catch(() => {
+              this.logining = false
             })
           } else {
             console.log('error submit!!')
