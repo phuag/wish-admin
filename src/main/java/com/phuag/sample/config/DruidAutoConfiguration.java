@@ -55,6 +55,7 @@ public class DruidAutoConfiguration {
         dataSource.setTestOnBorrow(properties.isTestOnBorrow());
 
         try {
+            dataSource.setFilters("stat");
             dataSource.init();
         } catch (SQLException e) {
             throw new RuntimeException(e);

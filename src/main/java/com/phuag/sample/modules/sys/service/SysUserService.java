@@ -65,6 +65,11 @@ public class SysUserService {
         return sysUserMapper.getSysUserRolesByUser(user);
     }
 
+    /**
+     * 将SysUser中的password从明文转换为带盐密文后存储
+     * @param user
+     * @return
+     */
     public SysUser updatePassword(SysUser user){
         String hashedPassword = entryptPassword(user.getPassword());
         user.setPassword(hashedPassword);
@@ -75,7 +80,7 @@ public class SysUserService {
     /**
      * 生成安全的密码，生成随机的16位salt并经 过1024次sha-1 hash
      */
-    public  String entryptPassword(String plainPassword) {
+    public String entryptPassword(String plainPassword) {
         byte[] salt = Salt.generateSalt(properties.getSaltSize());
 //        byte[] hashPassword = Digests.sha1(plain.getBytes(), salt, HASH_INTERATIONS);
         byte[] hashPassword = new SimpleHash(properties.getHashAlgorithmName(),plainPassword,salt,properties.getHashIterations()).getBytes();

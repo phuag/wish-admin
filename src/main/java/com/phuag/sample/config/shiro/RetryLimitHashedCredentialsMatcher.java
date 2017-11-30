@@ -23,6 +23,16 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
 
     private int retryMax = 5;
 
+    public boolean isAllowUserMultiLogin() {
+        return allowUserMultiLogin;
+    }
+
+    public void setAllowUserMultiLogin(boolean allowUserMultiLogin) {
+        this.allowUserMultiLogin = allowUserMultiLogin;
+    }
+
+    private boolean allowUserMultiLogin = false;
+
     public RetryLimitHashedCredentialsMatcher(CacheManager cacheManager) {
         this.passwordRetryCache = cacheManager.getCache("passwordRetryCache");
     }

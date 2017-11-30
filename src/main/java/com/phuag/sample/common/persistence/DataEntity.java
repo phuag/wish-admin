@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phuag.sample.common.utils.IdGen;
 import com.phuag.sample.modules.sys.domain.SysUser;
 import com.phuag.sample.utils.UserUtils;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
@@ -18,17 +19,25 @@ import java.util.Date;
  * @author ThinkGem
  * @version 2014-05-16
  */
+@Data
 public abstract class DataEntity<T> extends BaseEntity<T> {
 
 	private static final long serialVersionUID = 1L;
-	
+
+	@Length(min=0, max=255)
 	protected String remarks;	// 备注
 
+	@JsonIgnore
 	protected String createBy;	// 创建者
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	protected Date createDate;	// 创建日期
 
+	@JsonIgnore
 	protected String updateBy;	// 更新者
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	protected Date updateDate;	// 更新日期
+	@JsonIgnore
+	@Length(min=1, max=1)
 	protected String delFlag; 	// 删除标记（0：正常；1：删除；2：审核）
 	
 	public DataEntity() {
@@ -72,59 +81,6 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 		this.updateDate = new Date();
 	}
 	
-	@Length(min=0, max=255)
-	public String getRemarks() {
-		return remarks;
-	}
 
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
-	
-	@JsonIgnore
-	public String getCreateBy() {
-		return createBy;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	@JsonIgnore
-	public String getUpdateBy() {
-		return updateBy;
-	}
-
-	public void setUpdateBy(String updateBy) {
-		this.updateBy = updateBy;
-	}
-
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	@JsonIgnore
-	@Length(min=1, max=1)
-	public String getDelFlag() {
-		return delFlag;
-	}
-
-	public void setDelFlag(String delFlag) {
-		this.delFlag = delFlag;
-	}
 
 }

@@ -30,6 +30,8 @@ public class UserPasswordDBRealm extends AuthorizingRealm {
     @Autowired
     private SysUserService sysUserService;
 
+    private boolean allowUserMutiLogin = false;
+
     /**
      * 认证回调函数, 登录时调用
      */
@@ -64,7 +66,7 @@ public class UserPasswordDBRealm extends AuthorizingRealm {
             PrincipalCollection principals) {
         SysUser principal = (SysUser) getAvailablePrincipal(principals);
         String username = (String) principals.getPrimaryPrincipal();
-        if (!Global.TRUE.equals(Global.getConfig("user.multiAccountLogin"))){
+        if (!allowUserMutiLogin){
             //不允许多用户同时登录，同一用户则需踢掉前面登录上的session
             Collection<Session> sessions =sysUserService.getSessionDao().getActiveSessions();
             if (sessions.size() > 0){
@@ -98,7 +100,7 @@ public class UserPasswordDBRealm extends AuthorizingRealm {
 //                        "perms[", "]"));
 //            }
 //        }
-        authorizationInfo.setStringPermissions(perms);
+        authorizationInfo.addStringPermissions(perms);
         return authorizationInfo;
     }
 }

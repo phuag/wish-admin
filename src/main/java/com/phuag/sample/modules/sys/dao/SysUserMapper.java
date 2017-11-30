@@ -20,5 +20,9 @@ public interface SysUserMapper extends CrudDao<SysUser> {
             "and login_name= #{loginName,jdbcType=VARCHAR}")
     SysUser selectSysUserByLoginName(String loginName);
 
+    @Select("SELECT * FROM sys_role " +
+            "WHERE del_flag = 0 " +
+            "and id in " +
+            "(select role_id from sys_user_role where user_id = #{id,jdbcType=VARCHAR})")
     List<SysRole> getSysUserRolesByUser(SysUser user);
 }

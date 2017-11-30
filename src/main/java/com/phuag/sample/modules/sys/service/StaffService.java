@@ -2,6 +2,7 @@ package com.phuag.sample.modules.sys.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.phuag.sample.common.service.CrudService;
 import com.phuag.sample.common.utils.DTOUtils;
 import com.phuag.sample.exception.ResourceNotFoundException;
 import com.phuag.sample.modules.sys.dao.StaffMapper;
@@ -24,50 +25,49 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class StaffService {
+public class StaffService extends CrudService<StaffMapper,Staff>{
     private static final Logger log = LoggerFactory
             .getLogger(StaffService.class);
 
-    @Resource
-    private StaffMapper staffMapper;
+//    @Resource
+//    private StaffMapper staffMapper;
 
-    public StaffService(StaffMapper staffMapper) {
-        this.staffMapper = staffMapper;
-    }
+//    public StaffService(StaffMapper staffMapper) {
+//        this.staffMapper = staffMapper;
+//    }
 
     public int saveStaff(StaffForm form) {
         Staff staff = DTOUtils.map(form,Staff.class);
-        if (StringUtils.isBlank(staff.getId())) {
-            staff.preInsert();
-            return staffMapper.insert(staff);
-        } else {
-            staff.preUpdate();
-            return staffMapper.updateByPrimaryKey(staff);
-        }
+        return super.save(staff);
+//        if (StringUtils.isBlank(staff.getId())) {
+//            staff.preInsert();
+//            return staffMapper.insert(staff);
+//        } else {
+//            staff.preUpdate();
+//            return staffMapper.updateByPrimaryKey(staff);
+//        }
 
     }
 
     public int updateStaff(String staffId, StaffForm form) {
         Assert.hasText(staffId, "staff id can not be null");
-        Staff staff = staffMapper.selectByPrimaryKey(staffId);
+        Staff staff = dao.selectByPrimaryKey(staffId);
         DTOUtils.mapTo(form,staff);
         staff.preUpdate();
-        return staffMapper.updateByPrimaryKey(staff);
+        return dao.updateByPrimaryKey(staff);
     }
 
 
     public StaffDetail getStaffById(String staffId) {
         Assert.hasText(staffId, "staff id can not be null");
-        Staff staff = staffMapper.selectByPrimaryKey(staffId);
+//        Staff staff = staffMapper.selectByPrimaryKey(staffId);
+        Staff staff = super.select(staffId);
         if(staff==null){
             throw new ResourceNotFoundException(staffId);
         }
         return DTOUtils.map(staff,StaffDetail.class);
     }
 
-    public int deleteStaffById(String staffId) {
-        return staffMapper.deleteByPrimaryKey(staffId);
-    }
 
 
     public PageInfo<StaffDetail> searchStaff(String keyword, Pageable page) {
@@ -76,9 +76,9 @@ public class StaffService {
         //TODO need to add sort function ,but the pagerhelper is not support well.
         List<Staff> staffs;
         if (StringUtils.isNotBlank(keyword)) {
-            staffs = staffMapper.searchStaffByName(keyword);
+            staffs = dao.searchStaffByName(keyword);
         } else {
-            staffs = staffMapper.selectAll();
+            staffs = dao.logicalSelectAll();
         }
 
         List<StaffDetail> staffDetails = DTOUtils.mapList(staffs,StaffDetail.class);

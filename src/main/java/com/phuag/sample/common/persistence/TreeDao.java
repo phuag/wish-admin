@@ -3,6 +3,10 @@
  */
 package com.phuag.sample.common.persistence;
 
+import com.phuag.sample.common.persistence.provider.CoustomSqlProvider;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.UpdateProvider;
+
 import java.util.List;
 
 /**
@@ -15,16 +19,24 @@ public interface TreeDao<T extends TreeEntity<T>> extends CrudDao<T> {
 
 	/**
 	 * 找到所有子节点
-	 * @param entity
+	 * @param entity,将根据entity对象的parentIds值进行查询
 	 * @return
 	 */
-	public List<T> findByParentIdsLike(T entity);
+	@SelectProvider(
+			type = CoustomSqlProvider.class,
+			method = "dynamicSQL"
+	)
+	public List<T> selectByParentIdsLike(T entity);
 
 	/**
 	 * 更新所有父节点字段
 	 * @param entity
 	 * @return
 	 */
+	@UpdateProvider(
+			type = CoustomSqlProvider.class,
+			method = "dynamicSQL"
+	)
 	public int updateParentIds(T entity);
 	
 }

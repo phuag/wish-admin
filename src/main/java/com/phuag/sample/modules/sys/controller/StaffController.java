@@ -72,7 +72,7 @@ public class StaffController {
     @ResponseBody
     public ResponseEntity deleteStaff(@PathVariable("id") String id) {
         log.debug("delete staff id@{}", id);
-        int res = staffService.deleteStaffById(id);
+        int res = staffService.delete(id);
         log.debug("deleted res is @{}", res);
         return new ResponseEntity(ResponseMessage.info("delete staff success:" + res), HttpStatus.OK);
     }
@@ -81,7 +81,9 @@ public class StaffController {
     @ResponseBody
     public ResponseEntity batchRemove(String[] ids) {
         for (String id : ids) {
-            staffService.deleteStaffById(id);
+            Staff f = new Staff();
+            f.setId(id);
+            staffService.delete(f);
         }
         return new ResponseEntity(ResponseMessage.info("batchremove staff success"), HttpStatus.OK);
     }

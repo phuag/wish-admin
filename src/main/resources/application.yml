@@ -28,6 +28,7 @@ pagehlper:
 
 shiro:
   realmClass: com.phuag.sample.common.security.shiro.UserPasswordDBRealm
+  multiAccountLogin: false
   loginUrl: /api/login
 #  successUrl: /main.html#/main
 #  unauthorizedUrl: /main.html#/404
