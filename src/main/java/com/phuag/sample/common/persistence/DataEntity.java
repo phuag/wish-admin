@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 
 /**
- * 数据Entity类
+ * 数据Entity类,关联表对象别继承此类
  * @author ThinkGem
  * @version 2014-05-16
  */

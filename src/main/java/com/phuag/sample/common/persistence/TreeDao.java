@@ -3,7 +3,7 @@
  */
 package com.phuag.sample.common.persistence;
 
-import com.phuag.sample.common.persistence.provider.CoustomSqlProvider;
+import com.phuag.sample.common.persistence.provider.CustomSqlProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 
@@ -23,7 +23,7 @@ public interface TreeDao<T extends TreeEntity<T>> extends CrudDao<T> {
 	 * @return
 	 */
 	@SelectProvider(
-			type = CoustomSqlProvider.class,
+			type = CustomSqlProvider.class,
 			method = "dynamicSQL"
 	)
 	public List<T> selectByParentIdsLike(T entity);
@@ -34,7 +34,7 @@ public interface TreeDao<T extends TreeEntity<T>> extends CrudDao<T> {
 	 * @return
 	 */
 	@UpdateProvider(
-			type = CoustomSqlProvider.class,
+			type = CustomSqlProvider.class,
 			method = "dynamicSQL"
 	)
 	public int updateParentIds(T entity);

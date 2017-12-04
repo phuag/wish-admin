@@ -8,9 +8,9 @@ import tk.mybatis.mapper.mapperhelper.SqlHelper;
 /**
  * Created by vvvvvv on 2017/11/22.
  */
-public class CoustomSqlProvider extends MapperTemplate {
+public class CustomSqlProvider extends MapperTemplate {
 
-    public CoustomSqlProvider(Class<?> mapperClass, MapperHelper mapperHelper) {
+    public CustomSqlProvider(Class<?> mapperClass, MapperHelper mapperHelper) {
         super(mapperClass, mapperHelper);
     }
 

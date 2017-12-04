@@ -1,6 +1,6 @@
 package com.phuag.sample.common.persistence;
 
-import com.phuag.sample.common.persistence.provider.CoustomSqlProvider;
+import com.phuag.sample.common.persistence.provider.CustomSqlProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 import tk.mybatis.mapper.common.Mapper;
@@ -20,7 +20,7 @@ public interface BaseDao<T> extends Mapper<T>, MySqlMapper<T> {
      * @return del_flag为0的数据
      */
     @SelectProvider(
-            type = CoustomSqlProvider.class,
+            type = CustomSqlProvider.class,
             method = "dynamicSQL"
     )
     List<T> logicalSelectAll();
@@ -31,7 +31,7 @@ public interface BaseDao<T> extends Mapper<T>, MySqlMapper<T> {
      * @return 该删除操作影响的数据条数
      */
     @UpdateProvider(
-            type = CoustomSqlProvider.class,
+            type = CustomSqlProvider.class,
             method = "dynamicSQL"
     )
     int logicalDelete(T var1);
@@ -42,7 +42,7 @@ public interface BaseDao<T> extends Mapper<T>, MySqlMapper<T> {
      * @return 该删除操作影响的数据条数
      */
     @UpdateProvider(
-            type = CoustomSqlProvider.class,
+            type = CustomSqlProvider.class,
             method = "dynamicSQL"
     )
     int logicalDeleteByPrimaryKey(Object var1);
