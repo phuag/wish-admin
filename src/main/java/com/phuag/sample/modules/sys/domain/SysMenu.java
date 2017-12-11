@@ -1,5 +1,7 @@
 package com.phuag.sample.modules.sys.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class SysMenu {
@@ -161,5 +163,10 @@ public class SysMenu {
 
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag == null ? null : delFlag.trim();
+    }
+
+    @JsonIgnore
+    public static String getRootId(){
+        return "1";
     }
 }

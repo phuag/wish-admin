@@ -9,6 +9,7 @@ import com.phuag.sample.common.utils.IdGen;
 import com.phuag.sample.modules.sys.domain.SysUser;
 import com.phuag.sample.utils.UserUtils;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
@@ -20,6 +21,7 @@ import java.util.Date;
  * @version 2014-05-16
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public abstract class DataEntity<T> extends BaseEntity<T> {
 
 	private static final long serialVersionUID = 1L;

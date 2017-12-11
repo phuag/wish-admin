@@ -1,7 +1,6 @@
-package com.phuag.sample.config;
+package com.phuag.sample.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 /**
  * Created by vvvvvv on 2017/3/2.

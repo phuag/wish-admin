@@ -1,4 +1,4 @@
-package com.phuag.sample.config;
+package com.phuag.sample.configuration;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
@@ -12,9 +12,6 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 

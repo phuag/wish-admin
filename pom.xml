@@ -11,6 +11,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <modelmapper.version>0.7.3</modelmapper.version>
         <guava.version>21.0</guava.version>
@@ -72,6 +73,10 @@
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
         </dependency>
         <!--mapper-->
         <dependency>

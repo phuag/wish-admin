@@ -1,4 +1,4 @@
-package com.phuag.sample.config.shiro;
+package com.phuag.sample.configuration.shiro;
 
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
@@ -28,7 +28,6 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.session.mgt.WebSessionManager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -212,6 +211,7 @@ public class ShiroAutoConfiguration {
 
     @Bean(name = "shiroFilter")
     @DependsOn("securityManager")
+    @ConditionalOnMissingBean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new  ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);

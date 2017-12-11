@@ -2,6 +2,7 @@ package com.phuag.sample.modules.sys.service;
 
 
 import com.phuag.sample.modules.sys.domain.Staff;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Slf4j
 public class StaffServiceTest {
 
     @Autowired
@@ -32,6 +34,7 @@ public class StaffServiceTest {
 
     @Test
     public void deleteStaff() throws Exception {
+        log.info("{}",1);
         Staff staff = new Staff();
         staff.setId("42");
         int res = staffService.delete(staff);

@@ -1,4 +1,4 @@
-package com.phuag.sample.config.shiro;
+package com.phuag.sample.configuration.shiro;
 
 import org.apache.shiro.realm.Realm;
 import org.springframework.boot.context.properties.ConfigurationProperties;

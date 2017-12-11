@@ -1,4 +1,4 @@
-package com.phuag.sample.config.shiro;
+package com.phuag.sample.configuration.shiro;
 
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;

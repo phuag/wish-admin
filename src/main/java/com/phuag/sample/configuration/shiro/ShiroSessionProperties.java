@@ -1,4 +1,4 @@
-package com.phuag.sample.config.shiro;
+package com.phuag.sample.configuration.shiro;
 
 import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
 import org.apache.shiro.session.mgt.eis.SessionIdGenerator;

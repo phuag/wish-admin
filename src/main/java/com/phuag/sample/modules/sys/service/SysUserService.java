@@ -4,7 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.phuag.sample.common.security.Salt;
 import com.phuag.sample.common.utils.Encodes;
-import com.phuag.sample.config.shiro.ShiroProperties;
+import com.phuag.sample.configuration.shiro.ShiroProperties;
 import com.phuag.sample.modules.sys.dao.SysUserMapper;
 import com.phuag.sample.modules.sys.domain.SysRole;
 import com.phuag.sample.modules.sys.domain.SysUser;
