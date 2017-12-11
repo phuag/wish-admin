@@ -9,7 +9,9 @@ import com.phuag.sample.common.logging.enums.SysLogType;
 import com.phuag.sample.common.utils.AopUtils;
 import com.phuag.sample.common.utils.IdGen;
 import com.phuag.sample.common.utils.WebUtil;
+import com.phuag.sample.modules.sys.domain.SysUser;
 import org.aopalliance.intercept.MethodInterceptor;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.aop.support.StaticMethodMatcherPointcutAdvisor;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,16 +44,16 @@ public class AopAccessLoggerSupport extends StaticMethodMatcherPointcutAdvisor {
             AccessLogInfo info = createLogger(methodInterceptorHolder);
             Object response;
             try {
-                listeners.forEach(listeners-> listeners.onLogBefore(info));
+                listeners.forEach(listeners -> listeners.onLogBefore(info));
                 response = methodInvocation.proceed();
                 info.setResponse(response);
-                info.setRequestTime(System.currentTimeMillis());
-            }catch (Throwable e){
+                info.setResponseTime(System.currentTimeMillis());
+            } catch (Throwable e) {
                 info.setExcepion(e);
                 info.setAction("异常");
                 throw e;
-            }finally {
-                listeners.forEach(listeners->listeners.onLogger(info));
+            } finally {
+                listeners.forEach(listeners -> listeners.onLogger(info));
             }
             return response;
         });
@@ -71,11 +73,11 @@ public class AopAccessLoggerSupport extends StaticMethodMatcherPointcutAdvisor {
             info.setModule(define.getModule());
             info.setDescribe(define.getDescribe());
             String type = define.getType();
-            if(SysLogType.ACCESS.getValue().equals(type)){
+            if (SysLogType.ACCESS.getValue().equals(type)) {
                 info.setAction("访问");
-            }else if(SysLogType.LOGIN.getValue().equals(type)){
+            } else if (SysLogType.LOGIN.getValue().equals(type)) {
                 info.setAction("登录");
-            }else if(SysLogType.OPER.getValue().equals(type)){
+            } else if (SysLogType.OPER.getValue().equals(type)) {
                 info.setAction("操作");
             }
         }
@@ -84,11 +86,16 @@ public class AopAccessLoggerSupport extends StaticMethodMatcherPointcutAdvisor {
         info.setMethod(holder.getMethod());
 
         HttpServletRequest request = WebUtil.getHttpServletRequest();
-        if (request!=null){
+        if (request != null) {
             info.setHttpHeaders(WebUtil.getHeaders(request));
             info.setIp(WebUtil.getIpAddr(request));
             info.setHttpMethod(request.getMethod());
             info.setUrl(request.getRequestURL().toString());
+        }
+        SysUser principal = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        if (principal != null) {
+            info.setOperUserId(principal.getId());
+            info.setOperUserName(principal.getName());
         }
         return info;
 
