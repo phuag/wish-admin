@@ -13,7 +13,7 @@ import java.util.List;
 public interface StaffMapper extends CrudDao<Staff> {
 
     @Select("SELECT * FROM staff " +
-            "WHERE del_flag = #{DEL_FLAG_DELETE} " +
+            "WHERE del_flag = 0 " +
             "AND LOWER(name) LIKE concat(concat('%',LOWER(#{keyword,jdbcType=VARCHAR})),'%')")
     List<Staff> searchStaffByName(String keyword);
 }

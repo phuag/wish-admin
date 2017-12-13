@@ -92,10 +92,13 @@ public class AopAccessLoggerSupport extends StaticMethodMatcherPointcutAdvisor {
             info.setHttpMethod(request.getMethod());
             info.setUrl(request.getRequestURL().toString());
         }
-        SysUser principal = (SysUser) SecurityUtils.getSubject().getPrincipal();
-        if (principal != null) {
+        SysUser principal = null;
+        try {
+            principal = (SysUser) SecurityUtils.getSubject().getPrincipal();
             info.setOperUserId(principal.getId());
             info.setOperUserName(principal.getName());
+        } catch (Throwable e){
+            //当没有获取到当前用户时不设置操作者信息，继续运行
         }
         return info;
 
