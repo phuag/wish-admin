@@ -21,7 +21,7 @@ public class CustomSqlProvider extends MapperTemplate {
         sql.append(SqlHelper.selectAllColumns(entityClass));
         sql.append(SqlHelper.fromTable(entityClass, this.tableName(entityClass)));
         sql.append("<where>");
-        sql.append("del_flag = 0");
+        sql.append("del_flag = ${@com.phuag.sample.common.persistence.BaseEntity@DEL_FLAG_NORMAL}");
         sql.append("</where>");
         sql.append(SqlHelper.orderByDefault(entityClass));
         return sql.toString();
@@ -66,7 +66,7 @@ public class CustomSqlProvider extends MapperTemplate {
         StringBuilder sql = new StringBuilder();
         sql.append(SqlHelper.updateTable(entityClass, this.tableName(entityClass)));
         sql.append("<set>");
-        sql.append("del_flag = 1,");
+        sql.append("del_flag = ${@com.phuag.sample.common.persistence.BaseEntity@DEL_FLAG_DELETE},");
         sql.append("</set>");
         sql.append(SqlHelper.wherePKColumns(entityClass));
         return sql.toString();
