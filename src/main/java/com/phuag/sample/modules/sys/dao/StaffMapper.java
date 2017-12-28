@@ -14,6 +14,6 @@ public interface StaffMapper extends CrudDao<Staff> {
 
     @Select("SELECT * FROM staff " +
             "WHERE del_flag = ${@com.phuag.sample.common.persistence.BaseEntity@DEL_FLAG_NORMAL} " +
-            "AND LOWER(name) LIKE concat(concat('%',LOWER(#{keyword,jdbcType=VARCHAR})),'%')")
+            "AND LOWER(name) LIKE concat('%',LOWER(#{keyword,jdbcType=VARCHAR}),'%')")
     List<Staff> searchStaffByName(String keyword);
 }

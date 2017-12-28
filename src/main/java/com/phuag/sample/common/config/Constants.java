@@ -8,5 +8,5 @@ public class Constants {
     public static final String URI_API = "/api";
     public static final String URI_STAFF = "/staff";
     public static final String URI_LOG = "/log";
-
+    public static final String URI_SYSUSER = "/sysUser";
 }

@@ -1,26 +1,43 @@
 package com.phuag.sample.modules.sys.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.phuag.sample.common.config.Constants;
 import com.phuag.sample.common.model.ResponseMessage;
 import com.phuag.sample.modules.sys.domain.SysUser;
+import com.phuag.sample.modules.sys.model.SysUserDetail;
+import com.phuag.sample.modules.sys.service.SysUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = Constants.URI_API)
-public class UserController {
-    private static final Logger log = LoggerFactory
-            .getLogger(UserController.class);
+@RequestMapping(value = Constants.URI_API + Constants.URI_SYSUSER)
+@Slf4j
+public class SysUserController {
+
+    @Autowired
+    private SysUserService sysUserService;
+
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<PageInfo<SysUserDetail>> getAllSysUser(
+            @RequestParam(value = "office", required = false) String officeId,
+            @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable page) {
+        log.debug("get all SysUser of q@{},page@{}", officeId, page);
+        PageInfo<SysUserDetail> sysUsers = sysUserService.searchSysUser(officeId, page);
+        log.debug("get all SysUser, num:{}", sysUsers.getSize());
+        return new ResponseEntity<PageInfo<SysUserDetail>>(sysUsers, HttpStatus.OK);
+    }
     
     /**
      * Get the authenticated user info.

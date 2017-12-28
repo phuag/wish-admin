@@ -29,7 +29,7 @@ pagehlper:
 shiro:
   realmClass: com.phuag.sample.common.security.shiro.UserPasswordDBRealm
   multiAccountLogin: false
-  loginUrl: /api/login
+  loginUrl: /api/sysUser/login
 #  successUrl: /main.html#/main
 #  unauthorizedUrl: /main.html#/404
   filterChainDefinitions:
@@ -42,10 +42,10 @@ shiro:
      /partials/**: anon
      /i18n/**: anon
      /api/ping: anon
-     /api/login: anon
+     /api/sysUser/login: anon
      /main.html#/register: anon
      /main.html#/login: authcBasic
-     /api/me: authcBasic
+     /api/sysUser/me: authcBasic
 #     /api/logout: logout
      /api/**: user
      /main.html#/**: user

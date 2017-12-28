@@ -6,7 +6,7 @@ import Login from '@/components/Login.vue'
 import NotFound from '@/components/404.vue'
 import Home from '@/components/Home.vue'
 import Main from '@/components/Main.vue'
-import Table from '@/components/nav1/Table.vue'
+import SysUser from '@/components/nav1/SysUser.vue'
 import Staff from '@/components/nav1/Staff.vue'
 import Form from '@/components/nav1/Form.vue'
 import User from '@/components/nav1/user.vue'
@@ -29,11 +29,11 @@ const routes = [
   {
     path: '/',
     component: Home,
-    name: 'Home',
+    name: '用户和机构',
     iconCls: 'el-icon-message', // 图标样式class
     children: [
       { path: '/main', component: Main, name: '主页', hidden: true },
-      { path: '/table', component: Table, name: 'Table' },
+      { path: '/sysUser', component: SysUser, name: '用户管理' },
       { path: '/staff', component: Staff, name: 'Staff' },
       { path: '/form', component: Form, name: 'Form' },
       { path: '/user', component: User, name: '列表' }

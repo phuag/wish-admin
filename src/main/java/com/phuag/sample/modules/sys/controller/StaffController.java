@@ -7,6 +7,7 @@ import com.phuag.sample.modules.sys.domain.Staff;
 import com.phuag.sample.modules.sys.model.StaffDetail;
 import com.phuag.sample.modules.sys.model.StaffForm;
 import com.phuag.sample.modules.sys.service.StaffService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,8 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping(value = Constants.URI_API + Constants.URI_STAFF)
+@Slf4j
 public class StaffController {
-    private static final Logger log = LoggerFactory
-            .getLogger(StaffController.class);
 
     @Autowired
     private StaffService staffService;
@@ -35,9 +35,9 @@ public class StaffController {
     public ResponseEntity<PageInfo<StaffDetail>> getAllStaff(
             @RequestParam(value = "q", required = false) String keyword,
             @PageableDefault(page = 0, size = 20, sort = "staffId", direction = Direction.DESC) Pageable page) {
-        log.debug("get all staffInfo of q@{},page@{}", keyword, page);
+        log.debug("get all staff Info of q@{},page@{}", keyword, page);
         PageInfo<StaffDetail> staff = staffService.searchStaff(keyword, page);
-        log.debug("get allStaff, num:{}", staff.getPageSize());
+        log.debug("get all Staff, num:{}", staff.getSize());
         return new ResponseEntity<PageInfo<StaffDetail>>(staff, HttpStatus.OK);
     }
 

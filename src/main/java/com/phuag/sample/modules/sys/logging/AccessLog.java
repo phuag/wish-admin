@@ -26,6 +26,6 @@ public class AccessLog implements AccessLoggerListener {
 
     @Override
     public void onLogger(AccessLogInfo logInfo) {
-        log.debug("拦截到调用信息:{}",logInfo.toString());
+//        log.debug("拦截到调用信息:{}",logInfo.toString());
     }
 }

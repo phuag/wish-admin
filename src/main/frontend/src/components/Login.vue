@@ -63,7 +63,7 @@
               // sessionStorage.setItem('user', JSON.stringify(user));
               let tokenData = { token: base64.encode(loginParams.username + ':' + loginParams.password), user: user }
               store.commit(types.LOGIN, tokenData)
-              console.log(store.state.user)
+              // console.log(store.state.user)
               router.push({ path: '/' })
             }).catch(() => {
               this.logining = false

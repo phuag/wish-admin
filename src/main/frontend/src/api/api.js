@@ -36,7 +36,6 @@ axios.interceptors.response.use(
     return response
   },
   error => {
-    debugger
     if (error.response) {
       switch (error.response.status) {
         case 401:
@@ -63,12 +62,12 @@ axios.interceptors.response.use(
 export const requestLogin = params => {
   // httpHeaders.Authorization = 'Basic ' + base64.encode(params.username + ':' + params.password)
   axios.defaults.headers.common['Authorization'] = 'Basic ' + base64.encode(params.username + ':' + params.password)
-  return axios.post(`${base}/api/me`).then(res => res.data)
+  return axios.post(`${base}/api/sysUser/me`).then(res => res.data)
 }
 
 export const requestLogout = () => {
   delete axios.defaults.headers.common['Authorization']
-  return axios.post(`${base}/api/logout`)
+  return axios.post(`${base}/api/sysUser/logout`)
 }
 
 export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }) }
@@ -92,3 +91,5 @@ export const batchRemoveStaff = params => { return axios.delete(`${base}/api/sta
 export const editStaff = params => { return axios.put(`${base}/api/staff/` + params.id, params) }
 
 export const addStaff = params => { return axios.post(`${base}/api/staff/`, params) }
+
+export const getSysUserListPage = params => { return axios.get(`${base}/api/sysUser`, { params: params }) }

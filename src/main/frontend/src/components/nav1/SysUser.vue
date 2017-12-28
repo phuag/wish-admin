@@ -3,11 +3,22 @@
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
+        <el-cascader v-model="filters.office" :options="officeOptions" clearable change-on-select placeholder="所在部门">
+        </el-cascader>
+        <el-form-item>
+          <el-input v-model="filters.loginName" placeholder="登录名"></el-input>
+        </el-form-item>
         <el-form-item>
           <el-input v-model="filters.name" placeholder="姓名"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" v-on:click="getUsers">查询</el-button>
+          <el-button type="primary" v-on:click="getSysUsers">查询</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">导出</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">导入</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleAdd">新增</el-button>
@@ -16,20 +27,22 @@
     </el-col>
 
     <!--列表-->
-    <el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+    <el-table :data="sysUsers" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
       <el-table-column type="selection" width="55">
       </el-table-column>
       <el-table-column type="index" width="60">
       </el-table-column>
+      <el-table-column prop="loingName" label="登录名" width="120" sortable>
+      </el-table-column>
       <el-table-column prop="name" label="姓名" width="120" sortable>
       </el-table-column>
-      <el-table-column prop="sex" label="性别" width="100" :formatter="formatSex" sortable>
-      </el-table-column>
-      <el-table-column prop="age" label="年龄" width="100" sortable>
+      <el-table-column prop="sex" label="性别" width="100" sortable>
       </el-table-column>
       <el-table-column prop="birth" label="生日" width="120" sortable>
       </el-table-column>
-      <el-table-column prop="addr" label="地址" min-width="180" sortable>
+      <el-table-column prop="office.name" label="所在部门" min-width="160" sortable>
+      </el-table-column>
+      <el-table-column prop="phone" label="电话" width="120" sortable>
       </el-table-column>
       <el-table-column label="操作" width="150">
         <template scope="scope">
@@ -54,8 +67,8 @@
         </el-form-item>
         <el-form-item label="性别">
           <el-radio-group v-model="editForm.sex">
-            <el-radio class="radio" :label="1">男</el-radio>
-            <el-radio class="radio" :label="0">女</el-radio>
+            <el-radio class="radio" label="男">男</el-radio>
+            <el-radio class="radio" label="女">女</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="年龄">
@@ -107,15 +120,21 @@
 <script>
   import util from '../../common/js/util'
   // import NProgress from 'nprogress'
-  import { getUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '../../api/api'
+  import { getSysUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '../../api/api'
+  import router from '../../router'
 
   export default {
     data () {
       return {
         filters: {
+          office: [],
+          loginName: '',
           name: ''
         },
-        users: [],
+        officeOptions: [
+          { value: 'zhinan', label: '指南' },
+          { value: 'zujian', label: '主键' }],
+        sysUsers: [],
         total: 0,
         page: 1,
         listLoading: false,
@@ -159,25 +178,28 @@
     methods: {
       // 性别显示转换
       formatSex: function (row, column) {
-        return row.sex === 1 ? '男' : row.sex === 0 ? '女' : '未知'
+        return row.sex === '男' ? '男' : row.sex === '女' ? '女' : '未知'
       },
       handleCurrentChange (val) {
         this.page = val
-        this.getUsers()
+        this.getSysUsers()
       },
       // 获取用户列表
-      getUsers () {
+      getSysUsers () {
         let para = {
           page: this.page,
           name: this.filters.name
         }
         this.listLoading = true
         // NProgress.start()
-        getUserListPage(para).then((res) => {
+        getSysUserListPage(para).then((res) => {
           this.total = res.data.total
-          this.users = res.data.users
+          this.sysUsers = res.data.list
           this.listLoading = false
           // NProgress.done()
+        }).catch(err => {
+          console.log(err)
+          router.push({ path: '/login' })
         })
       },
       // 删除
@@ -195,7 +217,7 @@
               message: '删除成功',
               type: 'success'
             })
-            this.getUsers()
+            this.getSysUsers()
           })
         }).catch(() => {
 
@@ -235,7 +257,7 @@
                 })
                 this.$refs['editForm'].resetFields()
                 this.editFormVisible = false
-                this.getUsers()
+                this.getSysUsers()
               })
             })
           }
@@ -259,7 +281,7 @@
                 })
                 this.$refs['addForm'].resetFields()
                 this.addFormVisible = false
-                this.getUsers()
+                this.getSysUsers()
               })
             })
           }
@@ -284,7 +306,7 @@
               message: '删除成功',
               type: 'success'
             })
-            this.getUsers()
+            this.getSysUsers()
           })
         }).catch(() => {
 
@@ -292,7 +314,7 @@
       }
     },
     mounted () {
-      this.getUsers()
+      this.getSysUsers()
     }
   }
 </script>

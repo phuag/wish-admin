@@ -25,6 +25,10 @@ public class SysUser extends DataEntity<SysUser>{
 
     private String name;// 姓名
 
+    private String sex;// 性别
+
+    private Date birth;// 生日
+
     private String email;// 邮箱
 
     private String phone;// 电话

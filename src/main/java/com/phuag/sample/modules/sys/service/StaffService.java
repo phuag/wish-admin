@@ -9,9 +9,8 @@ import com.phuag.sample.modules.sys.dao.StaffMapper;
 import com.phuag.sample.modules.sys.domain.Staff;
 import com.phuag.sample.modules.sys.model.StaffDetail;
 import com.phuag.sample.modules.sys.model.StaffForm;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +24,8 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class StaffService extends CrudService<StaffMapper,Staff>{
-    private static final Logger log = LoggerFactory
-            .getLogger(StaffService.class);
+@Slf4j
+public class StaffService extends CrudService<StaffMapper, Staff> {
 
 //    @Resource
 //    private StaffMapper staffMapper;
@@ -37,7 +35,7 @@ public class StaffService extends CrudService<StaffMapper,Staff>{
 //    }
 
     public int saveStaff(StaffForm form) {
-        Staff staff = DTOUtils.map(form,Staff.class);
+        Staff staff = DTOUtils.map(form, Staff.class);
         return super.save(staff);
 //        if (StringUtils.isBlank(staff.getId())) {
 //            staff.preInsert();
@@ -52,22 +50,20 @@ public class StaffService extends CrudService<StaffMapper,Staff>{
     public int updateStaff(String staffId, StaffForm form) {
         Assert.hasText(staffId, "staff id can not be null");
         Staff staff = dao.selectByPrimaryKey(staffId);
-        DTOUtils.mapTo(form,staff);
+        DTOUtils.mapTo(form, staff);
         staff.preUpdate();
         return dao.updateByPrimaryKey(staff);
     }
-
 
     public StaffDetail getStaffById(String staffId) {
         Assert.hasText(staffId, "staff id can not be null");
 //        Staff staff = staffMapper.selectByPrimaryKey(staffId);
         Staff staff = super.select(staffId);
-        if(staff==null){
+        if (staff == null) {
             throw new ResourceNotFoundException(staffId);
         }
-        return DTOUtils.map(staff,StaffDetail.class);
+        return DTOUtils.map(staff, StaffDetail.class);
     }
-
 
 
     public PageInfo<StaffDetail> searchStaff(String keyword, Pageable page) {
@@ -81,11 +77,10 @@ public class StaffService extends CrudService<StaffMapper,Staff>{
             staffs = dao.logicalSelectAll();
         }
 
-        List<StaffDetail> staffDetails = DTOUtils.mapList(staffs,StaffDetail.class);
+        List<StaffDetail> staffDetails = DTOUtils.mapList(staffs, StaffDetail.class);
 
         return new PageInfo<StaffDetail>(staffDetails);
     }
-
 
 
 }
