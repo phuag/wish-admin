@@ -225,9 +225,9 @@ public class ShiroAutoConfiguration {
         httpAuthenticationFilter.setLoginUrl(properties.getLoginUrl());
         filters.put("authcBasic",httpAuthenticationFilter);
 
-        LogoutFilter logoutFilter = new LogoutFilter();
-        logoutFilter.setRedirectUrl(properties.getLoginUrl());
-        filters.put("logout",logoutFilter);
+//        LogoutFilter logoutFilter = new LogoutFilter();
+//        logoutFilter.setRedirectUrl(properties.getLoginUrl());
+//        filters.put("logout",logoutFilter);
 
         shiroFilterFactoryBean.setFilters(filters);
         return shiroFilterFactoryBean;

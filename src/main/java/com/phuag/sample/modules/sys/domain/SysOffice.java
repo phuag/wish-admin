@@ -25,13 +25,5 @@ public class SysOffice extends TreeEntity<SysOffice> {
     private String email; 	// 邮箱
     private String useable;//是否可用
 
-    @Override
-    public SysOffice getParent() {
-        return parent;
-    }
 
-    @Override
-    public void setParent(SysOffice parent) {
-        this.parent = parent;
-    }
 }

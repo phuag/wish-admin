@@ -64,6 +64,15 @@ public class SysUserController {
         }
         return new ResponseEntity<ResponseMessage>(ResponseMessage.info("logouted"), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity deleteSysUser(@PathVariable("id") String id) {
+        log.debug("delete sysUser id@{}", id);
+        int res = sysUserService.delete(id);
+        log.debug("deleted res is @{}", res);
+        return new ResponseEntity(ResponseMessage.info("delete staff success:" + res), HttpStatus.OK);
+    }
     
    
 }

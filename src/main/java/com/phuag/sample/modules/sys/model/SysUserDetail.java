@@ -17,6 +17,8 @@ public class SysUserDetail implements Serializable {
 
     private SysOffice office;// 归属部门
 
+    private String officeNameWithPath;//喊路径的归属部门
+
     private String loginName;// 登录名
 
     private String no;// 工号

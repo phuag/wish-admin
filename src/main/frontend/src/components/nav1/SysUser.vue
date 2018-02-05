@@ -3,7 +3,7 @@
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
-        <el-cascader v-model="filters.office" :options="officeOptions" clearable change-on-select placeholder="所在部门">
+        <el-cascader v-model="filters.office" :options="officeOptions" @active-item-change="handleItemChange" :props="props" placeholder="所在部门">
         </el-cascader>
         <el-form-item>
           <el-input v-model="filters.loginName" placeholder="登录名"></el-input>
@@ -32,15 +32,15 @@
       </el-table-column>
       <el-table-column type="index" width="60">
       </el-table-column>
-      <el-table-column prop="loingName" label="登录名" width="120" sortable>
+      <el-table-column prop="loginName" label="登录名" width="120" sortable>
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="120" sortable>
       </el-table-column>
       <el-table-column prop="sex" label="性别" width="100" sortable>
       </el-table-column>
-      <el-table-column prop="birth" label="生日" width="120" sortable>
+      <el-table-column prop="birth" label="生日" width="120" :formatter="formatBirth" sortable>
       </el-table-column>
-      <el-table-column prop="office.name" label="所在部门" min-width="160" sortable>
+      <el-table-column prop="officeNameWithPath" label="所在部门" min-width="160" sortable>
       </el-table-column>
       <el-table-column prop="phone" label="电话" width="120" sortable>
       </el-table-column>
@@ -120,7 +120,7 @@
 <script>
   import util from '../../common/js/util'
   // import NProgress from 'nprogress'
-  import { getSysUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '../../api/api'
+  import { getSysUserListPage, getOfficeList, removeSysUser, batchRemoveUser, editUser, addUser } from '../../api/api'
   import router from '../../router'
 
   export default {
@@ -131,9 +131,12 @@
           loginName: '',
           name: ''
         },
-        officeOptions: [
-          { value: 'zhinan', label: '指南' },
-          { value: 'zujian', label: '主键' }],
+        officeOptions: [],
+        props: {
+          value: 'id',
+          label: 'name',
+          children: 'offices'
+        },
         sysUsers: [],
         total: 0,
         page: 1,
@@ -180,9 +183,77 @@
       formatSex: function (row, column) {
         return row.sex === '男' ? '男' : row.sex === '女' ? '女' : '未知'
       },
+      formatBirth: function (row, column) {
+        return util.formatDate.format(new Date(row.birth))
+      },
       handleCurrentChange (val) {
         this.page = val
         this.getSysUsers()
+      },
+      handleItemChange (val) {
+        console.log('active item:', val)
+        let para = {
+          officeId: val[val.length - 1]
+        }
+        getOfficeList(para).then((res) => {
+          let temp = this.officeOptions // array
+          let matchFlag = false
+          while (true) {
+            for (let v of temp) {
+              let index = val.indexOf(v.id)
+              if (index >= 0) {
+                temp = v.offices
+                if (index === val.length - 1) {
+                  matchFlag = true
+                  if (res.data && res.data.length > 0) {
+                    v.offices = res.data.map(vv => {
+                      return {
+                        name: vv.name,
+                        id: vv.id,
+                        offices: []
+                      }
+                    })
+                  } else {
+                    delete v.offices
+                  }
+                }
+                break
+              }
+            }
+            if (matchFlag) {
+              break
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+        // setTimeout(_ => {
+        //   if (val.indexOf('江苏') > -1 && !this.officeOptions[0].offices.length) {
+        //     this.officeOptions[0].offices = [{
+        //       label: '南京'
+        //     }]
+        //   } else if (val.indexOf('浙江') > -1 && !this.officeOptions[1].offices.length) {
+        //     this.officeOptions[1].offices = [{
+        //       label: '杭州'
+        //     }]
+        //   }
+        // }, 300)
+      },
+      initOfficeOptions () {
+        let para = {
+          officeId: 0
+        }
+        getOfficeList(para).then((res) => {
+          this.officeOptions = res.data.map(v => {
+            return {
+              name: v.name,
+              id: v.id,
+              offices: []
+            }
+          })
+        }).catch(err => {
+          console.log(err)
+        })
       },
       // 获取用户列表
       getSysUsers () {
@@ -210,7 +281,7 @@
           this.listLoading = true
           // NProgress.start()
           let para = { id: row.id }
-          removeUser(para).then((res) => {
+          removeSysUser(para).then((res) => {
             this.listLoading = false
             // NProgress.done()
             this.$message({
@@ -315,6 +386,7 @@
     },
     mounted () {
       this.getSysUsers()
+      this.initOfficeOptions()
     }
   }
 </script>

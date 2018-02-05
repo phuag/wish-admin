@@ -58,7 +58,7 @@ let routesOpenToPublic = ['/login', '/authredirect', '/reset', '/sendpwd']
 
 router.beforeEach((to, from, next) => {
   let user = store.state.user
-  if (user) {
+  if (user && user !== '') {
     if (to.path === '/login') {
       next({ path: '/' }) // 有session 想跳到login，转到主页
     } else {

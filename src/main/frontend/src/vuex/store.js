@@ -1,28 +1,32 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
+import VuexPersistence from 'vuex-persist'
 import * as types from './types'
 
 Vue.use(Vuex)
 
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage
+})
+
 export default new Vuex.Store({
   state: {
-    user: null,
-    token: null,
+    user: '',
+    token: '',
     title: ''
   },
   mutations: {
     [types.LOGIN]: (state, data) => {
-      localStorage.setItem('token', data)
       state.token = data.token
       state.user = data.user
     },
     [types.LOGOUT]: (state) => {
-      localStorage.removeItem('token')
-      state.token = null
-      state.user = null
+      state.token = ''
+      state.user = ''
     },
     [types.TITLE]: (state, data) => {
       state.title = data
     }
-  }
+  },
+  plugins: [vuexLocal.plugin]
 })

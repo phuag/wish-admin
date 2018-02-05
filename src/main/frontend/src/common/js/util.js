@@ -54,6 +54,21 @@ export default {
       }
       return null
     }
+  },
+  toTree: function (a, idStr, pidStr, chindrenStr) {
+    let r = []; let hash = {}; let id = idStr; let pid = pidStr; let children = chindrenStr; let len = a.length
+    for (let i = 0; i < len; i++) {
+      hash[a[i][id]] = a[i]
+    }
+    for (let j = 0; j < len; j++) {
+      let aVal = a[j]; let hashVP = hash[aVal[pid]]
+      if (hashVP) {
+        !hashVP[children] && (hashVP[children] = [])
+        hashVP[children].push(aVal)
+      } else {
+        r.push(aVal)
+      }
+    }
+    return r
   }
-
 }

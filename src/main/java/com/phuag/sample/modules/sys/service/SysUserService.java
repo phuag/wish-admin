@@ -11,6 +11,7 @@ import com.phuag.sample.configuration.shiro.ShiroProperties;
 import com.phuag.sample.modules.sys.dao.StaffMapper;
 import com.phuag.sample.modules.sys.dao.SysUserMapper;
 import com.phuag.sample.modules.sys.domain.Staff;
+import com.phuag.sample.modules.sys.domain.SysOffice;
 import com.phuag.sample.modules.sys.domain.SysRole;
 import com.phuag.sample.modules.sys.domain.SysUser;
 import com.phuag.sample.modules.sys.model.SysUserDetail;
@@ -34,7 +35,11 @@ import java.util.stream.Collectors;
 public class SysUserService extends CrudService<SysUserMapper, SysUser> {
 
     @Autowired
+    private SysOfficeService sysOfficeService;
+
+    @Autowired
     private ShiroProperties properties;
+
 
     @Resource
     private SessionDAO sessionDao;
@@ -105,7 +110,9 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
 
         List<SysUserDetail> staffDetails = sysUsers.stream().map(sysUser -> {
             SysUserDetail sysUserDetail = DTOUtils.map(sysUser,SysUserDetail.class);
-            sysUserDetail.setOffice(dao.getSysUserOffice(sysUser));
+            SysOffice office = dao.getSysUserOffice(sysUser);
+            sysUserDetail.setOffice(office);
+            sysUserDetail.setOfficeNameWithPath(sysOfficeService.getOfficeNameWithPath(office));
             return sysUserDetail;
         }).collect(Collectors.toList());
 

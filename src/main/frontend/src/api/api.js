@@ -49,9 +49,11 @@ axios.interceptors.response.use(
           router.push({path: '/404'})
           break
         default:
+          store.commit(types.LOGOUT)
           router.push({ path: '/login' })
       }
     } else {
+      store.commit(types.LOGOUT)
       router.push({ path: '/login' })
     }
     return Promise.reject(error)
@@ -93,3 +95,9 @@ export const editStaff = params => { return axios.put(`${base}/api/staff/` + par
 export const addStaff = params => { return axios.post(`${base}/api/staff/`, params) }
 
 export const getSysUserListPage = params => { return axios.get(`${base}/api/sysUser`, { params: params }) }
+
+export const removeSysUser = params => { return axios.delete(`${base}/api/sysUser/` + params.id) }
+
+export const batchRemoveSysUser = params => { return axios.delete(`${base}/api/sysUser/batchremove`, { params: params }) }
+
+export const getOfficeList = params => { return axios.get(`${base}/api/sysOffice`, { params: params }) }

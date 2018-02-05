@@ -29,22 +29,16 @@ pagehlper:
 shiro:
   realmClass: com.phuag.sample.common.security.shiro.UserPasswordDBRealm
   multiAccountLogin: false
-  loginUrl: /api/sysUser/login
+#  loginUrl: /api/sysUser/login
 #  successUrl: /main.html#/main
 #  unauthorizedUrl: /main.html#/404
   filterChainDefinitions:
      /druid/*: anon
      swagger-ui.html*: anon
-     /bower_components/**: anon
-     /js/**: anon
-     /css/**: anon
-     /images/**: anon
-     /partials/**: anon
-     /i18n/**: anon
      /api/ping: anon
      /api/sysUser/login: anon
-     /main.html#/register: anon
-     /main.html#/login: authcBasic
+#     /main.html#/register: anon
+#     /main.html#/login: authcBasic
      /api/sysUser/me: authcBasic
 #     /api/logout: logout
      /api/**: user
