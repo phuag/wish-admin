@@ -38,7 +38,7 @@ export const decode = (input) => {
   let chr1 = ''; let chr2 = ''; let chr3 = ''
   let enc1 = ''; let enc2 = ''; let enc3 = ''; let enc4 = ''
   let i = 0
-    // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
+  // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
   input = input.replace(/[^A-Za-z0-9+/=]/g, '')
   while (i < input.length) {
     enc1 = keyStr.indexOf(input.charAt(i++))

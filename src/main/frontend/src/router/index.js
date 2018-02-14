@@ -69,7 +69,7 @@ router.beforeEach((to, from, next) => {
     if (routesOpenToPublic.indexOf(to.path) !== -1) {
       next() // 无session 想跳到公开页面，正常跳转
     } else {
-      next('/login')  // 无session 想跳到非公开页面，转到登录
+      next('/login') // 无session 想跳到非公开页面，转到登录
     }
   }
 

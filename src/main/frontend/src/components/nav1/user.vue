@@ -68,7 +68,6 @@ export default {
     this.getUser()
   }
 }
-
 </script>
 
 <style scoped>

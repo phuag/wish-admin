@@ -3,7 +3,7 @@
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
-        <el-cascader v-model="filters.office" :options="officeOptions" @active-item-change="handleItemChange" :props="props" placeholder="所在部门">
+        <el-cascader v-model="filters.office" :options="officeOptions" :props="props" placeholder="所在部门">
         </el-cascader>
         <el-form-item>
           <el-input v-model="filters.loginName" placeholder="登录名"></el-input>
@@ -227,30 +227,20 @@
         }).catch(err => {
           console.log(err)
         })
-        // setTimeout(_ => {
-        //   if (val.indexOf('江苏') > -1 && !this.officeOptions[0].offices.length) {
-        //     this.officeOptions[0].offices = [{
-        //       label: '南京'
-        //     }]
-        //   } else if (val.indexOf('浙江') > -1 && !this.officeOptions[1].offices.length) {
-        //     this.officeOptions[1].offices = [{
-        //       label: '杭州'
-        //     }]
-        //   }
-        // }, 300)
       },
       initOfficeOptions () {
-        let para = {
-          officeId: 0
-        }
-        getOfficeList(para).then((res) => {
-          this.officeOptions = res.data.map(v => {
-            return {
-              name: v.name,
-              id: v.id,
-              offices: []
-            }
-          })
+        // let para = {
+        //   officeId: 0
+        // }
+        getOfficeList().then((res) => {
+          this.officeOptions = util.toTree(res.data, 'id', 'parentId', 'offices')
+          // this.officeOptions = res.data.map(v => {
+          //   return {
+          //     name: v.name,
+          //     id: v.id,
+          //     offices: []
+          //   }
+          // })
         }).catch(err => {
           console.log(err)
         })
