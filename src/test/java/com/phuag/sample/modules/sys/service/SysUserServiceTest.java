@@ -21,7 +21,11 @@ import static org.junit.Assert.*;
 public class SysUserServiceTest {
     @Autowired
     private SysUserService sysUserService;
+
     @Test
+    public void getSysUserById() throws Exception {
+    }
+//    @Test
     public void getSysUserRolesByUser() throws Exception {
         SysUser user = new SysUser();
         user.setId("1");

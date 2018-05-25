@@ -32,9 +32,10 @@ public class SysUserController {
     @ResponseBody
     public ResponseEntity<PageInfo<SysUserDetail>> getAllSysUser(
             @RequestParam(value = "office", required = false) String officeId,
+            @RequestParam(value = "name", required = false) String name,
             @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable page) {
-        log.debug("get all SysUser of q@{},page@{}", officeId, page);
-        PageInfo<SysUserDetail> sysUsers = sysUserService.searchSysUser(officeId, page);
+        log.debug("get all SysUser of office@{},name@{},page@{}", officeId,name, page);
+        PageInfo<SysUserDetail> sysUsers = sysUserService.searchSysUser(officeId,name, page);
         log.debug("get all SysUser, num:{}", sysUsers.getSize());
         return new ResponseEntity<PageInfo<SysUserDetail>>(sysUsers, HttpStatus.OK);
     }

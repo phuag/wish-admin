@@ -30,9 +30,9 @@ public class SysOfficeController {
     @ResponseBody
     public ResponseEntity<List<SysOffice>> getAllSysOffice(
             @RequestParam(value = "officeId", required = false) String officeId) {
-        log.debug("get all SysUser of officeId@{}", officeId);
+        log.debug("get all SysOffice of officeId@{}", officeId);
         List<SysOffice> sysUsers = sysOfficeService.searchSysOffice(officeId);
-        log.debug("get all SysUser, num:{}", sysUsers.size());
+        log.debug("get all SysOffice, num:{}", sysUsers.size());
         return new ResponseEntity<List<SysOffice>>(sysUsers, HttpStatus.OK);
     }
 }

@@ -55,7 +55,7 @@ public class CustomSqlProvider extends MapperTemplate {
         StringBuilder sql = new StringBuilder();
         sql.append(SqlHelper.updateTable(entityClass, this.tableName(entityClass)));
         sql.append("<set>");
-        sql.append("del_flag = #{DEL_FLAG_DELETE},");
+        sql.append("del_flag = ${@com.phuag.sample.common.persistence.BaseEntity@DEL_FLAG_DELETE},");
         sql.append("</set>");
         sql.append(SqlHelper.whereAllIfColumns(entityClass, this.isNotEmpty()));
         return sql.toString();

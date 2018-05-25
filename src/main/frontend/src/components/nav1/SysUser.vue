@@ -3,11 +3,8 @@
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
-        <el-cascader v-model="filters.office" :options="officeOptions" :props="props" placeholder="所在部门">
+        <el-cascader v-model="filters.office" :options="officeOptions" :props="props" change-on-select filterable clearable placeholder="所在部门">
         </el-cascader>
-        <el-form-item>
-          <el-input v-model="filters.loginName" placeholder="登录名"></el-input>
-        </el-form-item>
         <el-form-item>
           <el-input v-model="filters.name" placeholder="姓名"></el-input>
         </el-form-item>
@@ -60,7 +57,7 @@
     </el-col>
 
     <!--编辑界面-->
-    <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
+    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
       <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
         <el-form-item label="姓名" prop="name">
           <el-input v-model="editForm.name" auto-complete="off"></el-input>
@@ -88,7 +85,7 @@
     </el-dialog>
 
     <!--新增界面-->
-    <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
+    <el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false">
       <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
         <el-form-item label="姓名" prop="name">
           <el-input v-model="addForm.name" auto-complete="off"></el-input>
@@ -249,6 +246,7 @@
       getSysUsers () {
         let para = {
           page: this.page,
+          office: this.filters.office,
           name: this.filters.name
         }
         this.listLoading = true

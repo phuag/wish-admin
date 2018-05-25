@@ -93,8 +93,8 @@ public class ShiroAutoConfiguration {
     @ConditionalOnMissingBean(name = "mainRealm")
     @DependsOn(value = {"lifecycleBeanPostProcessor", "credentialsMatcher"})
     public Realm realm(CredentialsMatcher credentialsMatcher){
-        Class<?> realmClass = properties.getRealmClass();
-        Realm realm = (Realm) BeanUtils.instantiate(realmClass);
+        Class<? extends Realm> realmClass = properties.getRealmClass();
+        Realm realm = BeanUtils.instantiate(realmClass);
         if(realm instanceof AuthenticatingRealm){
             ((AuthenticatingRealm)realm).setCredentialsMatcher(credentialsMatcher);
         }
@@ -187,7 +187,7 @@ public class ShiroAutoConfiguration {
 
     @Bean
     @DependsOn(value = {"cacheManager", "sessionDAO"})
-    public WebSessionManager sessionManager(CacheManager cacheManager, SessionDAO sessionDAO){
+    public DefaultWebSessionManager sessionManager(CacheManager cacheManager, SessionDAO sessionDAO){
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setCacheManager(cacheManager);
         sessionManager.setGlobalSessionTimeout(shiroSessionProperties.getGlobalSessionTimeout());

@@ -40,7 +40,7 @@ public class StaffServiceTest {
     public void getStaffById() throws Exception {
     }
 
-    @Test
+//    @Test
     public void deleteStaff() throws Exception {
         log.info("{}",1);
         Staff staff = new Staff();
@@ -49,7 +49,7 @@ public class StaffServiceTest {
         Assert.assertEquals(1,res);
     }
 
-    @Test
+//    @Test
     public void deleteStaffById() throws Exception {
         int res = staffService.delete("44");
         Assert.assertEquals(1,res);

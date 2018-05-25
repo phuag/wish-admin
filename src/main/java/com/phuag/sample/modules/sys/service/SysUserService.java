@@ -97,7 +97,7 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
         return Encodes.encodeHex(salt)+ Encodes.encodeHex(hashPassword);
     }
 
-    public PageInfo<SysUserDetail> searchSysUser(String officeId, Pageable page) {
+    public PageInfo<SysUserDetail> searchSysUser(String officeId, String name, Pageable page) {
         PageHelper.startPage(page.getPageNumber(), page.getPageSize());
         List<SysUser> sysUsers;
         if (StringUtils.isNotBlank(officeId)) {
