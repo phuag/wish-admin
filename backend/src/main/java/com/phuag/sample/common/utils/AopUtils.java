@@ -1,5 +1,6 @@
 package com.phuag.sample.common.utils;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -51,20 +52,19 @@ public abstract class AopUtils {
         String[] names = signature.getParameterNames();
         Class[] args = signature.getParameterTypes();
         for (int i = 0, len = args.length; i < len; i++) {
-//            if (i != 0) {
-//                methodName.append(",");
-//            }
+
             methodName.append(args[i].getSimpleName()).append(" ").append(names[i]);
             methodName.append(",");
         }
-        methodName.delete(methodName.length() - 1, methodName.length());//去掉for循环的最后一个逗号
+        //去掉for循环的最后一个逗号
+        methodName.delete(methodName.length() - 1, methodName.length());
         return methodName.append(")").toString();
     }
 
     public static final Map<String,Object> getArgsMap(JoinPoint pjp){
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         Map<String,Object> args = new LinkedHashMap<>();
-        String names[] = signature.getParameterNames();
+        String[] names = signature.getParameterNames();
         Object[] pjpArgs = pjp.getArgs();
         for (int i = 0, len = names.length; i < len; i++) {
             args.put(names[i],pjpArgs[i]);

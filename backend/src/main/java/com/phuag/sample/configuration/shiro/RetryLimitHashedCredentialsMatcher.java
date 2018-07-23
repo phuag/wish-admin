@@ -13,7 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by vvvvvv on 2017/3/13.
+ * @author vvvvvv
+ * @date 2017/3/13
  */
 public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher {
 
@@ -38,23 +39,23 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
     }
 
     @Override
-    public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info){
+    public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
         String username = (String) token.getPrincipal();
         AtomicInteger retryCount = passwordRetryCache.get(username);
 
-        if(retryCount==null){
+        if (retryCount == null) {
             retryCount = new AtomicInteger(0);
-            passwordRetryCache.put(username,retryCount);
+            passwordRetryCache.put(username, retryCount);
         }
-        if(retryCount.incrementAndGet()>retryMax){
-            throw new ExcessiveAttemptsException("you has already been error for "+retryCount+" times! Please retry after 10 min.");
+        if (retryCount.incrementAndGet() > retryMax) {
+            throw new ExcessiveAttemptsException("you has already been error for " + retryCount + " times! Please retry after 10 min.");
         }
 
-        boolean matches = super.doCredentialsMatch(token,info);
-        if (matches){
+        boolean matches = super.doCredentialsMatch(token, info);
+        if (matches) {
             passwordRetryCache.remove(username);
-        }else {
-            throw new IncorrectCredentialsException("password is error for "+retryCount+" times, max retry for "+retryMax+" times.");
+        } else {
+            throw new IncorrectCredentialsException("password is error for " + retryCount + " times, max retry for " + retryMax + " times.");
         }
         return matches;
     }

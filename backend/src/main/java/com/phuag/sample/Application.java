@@ -9,7 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.RequestMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -19,7 +18,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * Created by vvvvvv on 2017/3/1.
+ *
+ * @author vvvvvv
+ * @date 2017/3/1
  */
 @SpringBootApplication
 @Configuration
@@ -53,7 +54,7 @@ public class Application {
 //    @RequestMapping("/")
     public String sayHello(){
         log.debug("in sayHello");
-        String passwordWithSalt = sysUserService.entryptPassword("asfas");
+        String passwordWithSalt = sysUserService.encryptPassword("asfas");
         return "Hello world!\n"+passwordWithSalt;
     }
 

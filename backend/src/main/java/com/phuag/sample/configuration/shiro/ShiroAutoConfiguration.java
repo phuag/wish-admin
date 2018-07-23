@@ -47,7 +47,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by vvvvvv on 2017/3/3.
+ *
+ * @author vvvvvv
+ * @date 2017/3/3
  */
 @Configuration
 @ConditionalOnWebApplication
@@ -93,8 +95,8 @@ public class ShiroAutoConfiguration {
     @ConditionalOnMissingBean(name = "mainRealm")
     @DependsOn(value = {"lifecycleBeanPostProcessor", "credentialsMatcher"})
     public Realm realm(CredentialsMatcher credentialsMatcher){
-        Class<? extends Realm> realmClass = properties.getRealmClass();
-        Realm realm = BeanUtils.instantiate(realmClass);
+        Class<?> realmClass = properties.getRealmClass();
+        Realm realm = (Realm) BeanUtils.instantiateClass(realmClass);
         if(realm instanceof AuthenticatingRealm){
             ((AuthenticatingRealm)realm).setCredentialsMatcher(credentialsMatcher);
         }
@@ -153,7 +155,7 @@ public class ShiroAutoConfiguration {
         sessionDAO.setActiveSessionsCacheName(shiroSessionProperties.getActiveSessionCacheName());
         Class<? extends SessionIdGenerator> idGenerator= shiroSessionProperties.getIdGenerator();
         if (idGenerator != null){
-            SessionIdGenerator sessionIdGenerator = BeanUtils.instantiate(idGenerator);
+            SessionIdGenerator sessionIdGenerator = BeanUtils.instantiateClass(idGenerator);
             sessionDAO.setSessionIdGenerator(sessionIdGenerator);
         }
         sessionDAO.setCacheManager(cacheManager);
@@ -187,7 +189,7 @@ public class ShiroAutoConfiguration {
 
     @Bean
     @DependsOn(value = {"cacheManager", "sessionDAO"})
-    public DefaultWebSessionManager sessionManager(CacheManager cacheManager, SessionDAO sessionDAO){
+    public WebSessionManager sessionManager(CacheManager cacheManager, SessionDAO sessionDAO){
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setCacheManager(cacheManager);
         sessionManager.setGlobalSessionTimeout(shiroSessionProperties.getGlobalSessionTimeout());
@@ -225,9 +227,9 @@ public class ShiroAutoConfiguration {
         httpAuthenticationFilter.setLoginUrl(properties.getLoginUrl());
         filters.put("authcBasic",httpAuthenticationFilter);
 
-//        LogoutFilter logoutFilter = new LogoutFilter();
-//        logoutFilter.setRedirectUrl(properties.getLoginUrl());
-//        filters.put("logout",logoutFilter);
+        LogoutFilter logoutFilter = new LogoutFilter();
+        logoutFilter.setRedirectUrl(properties.getLoginUrl());
+        filters.put("logout",logoutFilter);
 
         shiroFilterFactoryBean.setFilters(filters);
         return shiroFilterFactoryBean;

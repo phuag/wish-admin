@@ -3,7 +3,8 @@ package com.phuag.sample.configuration.shiro;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Created by vvvvvv on 2017/3/10.
+ * @author vvvvvv
+ * @date 2017/3/10
  */
 @ConfigurationProperties(prefix = "shiro.sign-in")
 public class ShiroSignInProperties {

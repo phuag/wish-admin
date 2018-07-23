@@ -6,7 +6,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.Map;
 
 /**
- * Created by vvvvvv on 2017/3/9.
+ *
+ * @author vvvvvv
+ * @date 2017/3/9
  */
 @ConfigurationProperties(prefix ="shiro")
 public class ShiroProperties {

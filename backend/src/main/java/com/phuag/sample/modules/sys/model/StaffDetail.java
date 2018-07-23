@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * Created by vvvvvv on 2017/9/18.
+ *
+ * @author vvvvvv
+ * @date 2017/9/18
  */
 @NoArgsConstructor
 @Data

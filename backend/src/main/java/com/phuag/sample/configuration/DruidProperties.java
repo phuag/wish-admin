@@ -3,7 +3,9 @@ package com.phuag.sample.configuration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Created by vvvvvv on 2017/3/2.
+ *
+ * @author vvvvvv
+ * @date 2017/3/2
  */
 @ConfigurationProperties(prefix ="druid")
 public class DruidProperties {

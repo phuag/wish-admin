@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.Set;
 
 
+/**
+ * @author vvvvvv
+ */
 public class UserPasswordDBRealm extends AuthorizingRealm {
 
     @Autowired
@@ -42,18 +45,19 @@ public class UserPasswordDBRealm extends AuthorizingRealm {
         String username = token.getUsername();
         SysUser user = sysUserService.getSysUserByLoginName(username);
         if (user == null) {
-            throw new UnknownAccountException("用户不存在");// 没找到帐号
+            // 没找到帐号
+            throw new UnknownAccountException("用户不存在");
         }
         if(!Global.YES.equals(user.getLoginFlag())){
-            throw new DisabledAccountException("用户不允许登录");//不允许登录
+            //不允许登录
+            throw new DisabledAccountException("用户不允许登录");
         }
         //salt与用户那边的输入没有关系，仅作为隐藏真实密码原文做的变换
         byte[] salt = Encodes.decodeHex(user.getPassword().substring(0, 16));
         //准备准确的认证信息，后面shiro使用用户提交的token信息与真实的认证信息进行比对。
-        return new SimpleAuthenticationInfo(user, // 用户
-                user.getPassword().substring(16), // 密码
-                ByteSource.Util.bytes(salt),//salt
-                getName() // realm name
+        return new SimpleAuthenticationInfo(user, user.getPassword().substring(16),
+                ByteSource.Util.bytes(salt),
+                getName()
         );
 
     }

@@ -5,7 +5,9 @@ import org.apache.shiro.session.mgt.eis.SessionIdGenerator;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Created by vvvvvv on 2017/3/9.
+ *
+ * @author vvvvvv
+ * @date 2017/3/9
  */
 @ConfigurationProperties(prefix ="shiro.session")
 public class ShiroSessionProperties {

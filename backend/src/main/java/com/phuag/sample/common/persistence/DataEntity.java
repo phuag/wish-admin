@@ -26,21 +26,41 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 备注
+	 */
 	@Length(min=0, max=255)
-	protected String remarks;	// 备注
+	protected String remarks;
 
+	/**
+	 * 创建者
+	 */
 	@JsonIgnore
-	protected String createBy;	// 创建者
+	protected String createBy;
+	/**
+	 * 创建日期
+ 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	protected Date createDate;	// 创建日期
+	protected Date createDate;
 
+	/**
+	 * 更新者
+ 	 */
 	@JsonIgnore
-	protected String updateBy;	// 更新者
+	protected String updateBy;
+
+	/**
+	 * 更新日期
+	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	protected Date updateDate;	// 更新日期
+	protected Date updateDate;
+
+	/**
+	 * 删除标记（0：正常；1：删除；2：审核）
+	 */
 	@JsonIgnore
 	@Length(min=1, max=1)
-	protected String delFlag; 	// 删除标记（0：正常；1：删除；2：审核）
+	protected String delFlag;
 	
 	public DataEntity() {
 		super();

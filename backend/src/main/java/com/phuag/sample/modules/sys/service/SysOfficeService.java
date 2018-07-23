@@ -14,12 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Created by vvvvvv on 2017/12/28.
+ *
+ * @author vvvvvv
+ * @date 2017/12/28
  */
 @Service
-@Transactional
 @Slf4j
 public class SysOfficeService extends TreeService<SysOfficeMapper, SysOffice> {
+
+    @Transactional(readOnly = true,rollbackFor = Exception.class)
     public List<SysOffice> searchSysOffice(String officeId) {
         log.debug("search office by officeId@{}", officeId);
         List<SysOffice> offices;
@@ -31,16 +34,17 @@ public class SysOfficeService extends TreeService<SysOfficeMapper, SysOffice> {
         return offices;
     }
 
+    @Transactional(readOnly = true,rollbackFor = Exception.class)
     public String getOfficeNameWithPath(SysOffice office) {
-        String officeNameWithPath = "";
+        StringBuilder officeNameWithPath = new StringBuilder();
         String parentIds = office.getParentIds();
         String[] ids = parentIds.split(",");
         for (String id : ids) {
-            if(id.equals("0")){
+            if("0".equals(id)){
                 continue;
             }
             String name = dao.selectByPrimaryKey(id).getName();
-            officeNameWithPath = officeNameWithPath + "/" + name;
+            officeNameWithPath.append("/").append(name);
         }
         return officeNameWithPath + "/" + office.getName();
     }

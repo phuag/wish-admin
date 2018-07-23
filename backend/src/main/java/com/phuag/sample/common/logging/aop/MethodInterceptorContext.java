@@ -6,9 +6,15 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Created by vvvvvv on 2017/12/7.
+ *
+ * @author vvvvvv
+ * @date 2017/12/7
  */
 public interface MethodInterceptorContext {
+    /**
+     * 获取目标
+     * @return 目标实例
+     */
     Object getTarget();
 
     Method getMethod();

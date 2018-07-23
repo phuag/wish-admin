@@ -9,7 +9,9 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * Created by vvvvvv on 2017/12/8.
+ *
+ * @author vvvvvv
+ * @date 2017/12/8
  */
 public class DefaultAccessLoggerParser implements AccessLoggerParser {
     @Override

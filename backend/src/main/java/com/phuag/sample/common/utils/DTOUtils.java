@@ -2,17 +2,10 @@
 package com.phuag.sample.common.utils;
 
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
-import com.phuag.sample.modules.sys.domain.Staff;
-import com.phuag.sample.modules.sys.model.StaffDetail;
-import com.phuag.sample.modules.sys.model.StaffForm;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.PageRequest;
-
+import org.modelmapper.convention.MatchingStrategies;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,6 +14,10 @@ import java.util.List;
 public class DTOUtils {
 
     private static final ModelMapper INSTANCE = new ModelMapper();
+    // 对象映射设置为严格模式
+    static {
+        INSTANCE.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+    }
 
     public static <S, T> T map(S source, Class<T> targetClass) {
         return INSTANCE.map(source, targetClass);

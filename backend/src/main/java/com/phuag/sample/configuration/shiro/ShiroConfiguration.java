@@ -16,7 +16,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 
 /**
- * Created by vvvvvv on 2017/3/9.
+ *
+ * @author vvvvvv
+ * @date 2017/3/9
  */
 public class ShiroConfiguration {
 

@@ -8,27 +8,28 @@ import com.phuag.sample.common.service.CrudService;
 import com.phuag.sample.common.utils.DTOUtils;
 import com.phuag.sample.common.utils.Encodes;
 import com.phuag.sample.configuration.shiro.ShiroProperties;
-import com.phuag.sample.modules.sys.dao.StaffMapper;
 import com.phuag.sample.modules.sys.dao.SysUserMapper;
-import com.phuag.sample.modules.sys.domain.Staff;
 import com.phuag.sample.modules.sys.domain.SysOffice;
 import com.phuag.sample.modules.sys.domain.SysRole;
 import com.phuag.sample.modules.sys.domain.SysUser;
 import com.phuag.sample.modules.sys.model.SysUserDetail;
-import org.apache.commons.lang3.StringUtils;
+import com.phuag.sample.modules.sys.model.SysUserForm;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by Administrator on 2016/3/27 0027.
+ *
+ * @author Administrator
+ * @date 2016/3/27 0027
  */
 @Service
 @Transactional
@@ -55,10 +56,11 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
     public SysUser getSysUserById(String id) {
         return dao.selectByPrimaryKey(id);
     }
+
     public Page<SysUser> getAllSysUser(Pageable page) {
         PageHelper.startPage(page.getPageNumber(), page.getPageSize());
         //TODO need to add sort function ,but the pagerhelper is not support well.
-        //PageHelper.orderBy("STAFF_NAME desc");
+        // 添加排序 PageHelper.orderBy("STAFF_NAME desc");
         return (Page<SysUser>) dao.selectAll();
     }
 
@@ -67,7 +69,7 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
         return dao.selectSysUserByLoginName(username);
     }
 
-    public int updateByPrimaryKey(SysUser record){
+    public int updateByPrimaryKey(SysUser record) {
         return dao.updateByPrimaryKey(record);
     }
 
@@ -77,11 +79,12 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
 
     /**
      * 将SysUser中的password从明文转换为带盐密文后存储
+     *
      * @param user
      * @return
      */
-    public SysUser updatePassword(SysUser user){
-        String hashedPassword = entryptPassword(user.getPassword());
+    public SysUser updatePassword(SysUser user) {
+        String hashedPassword = encryptPassword(user.getPassword());
         user.setPassword(hashedPassword);
         dao.updateByPrimaryKeySelective(user);
         return user;
@@ -90,32 +93,40 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
     /**
      * 生成安全的密码，生成随机的16位salt并经 过1024次sha-1 hash
      */
-    public String entryptPassword(String plainPassword) {
+    public String encryptPassword(String plainPassword) {
         byte[] salt = Salt.generateSalt(properties.getSaltSize());
-//        byte[] hashPassword = Digests.sha1(plain.getBytes(), salt, HASH_INTERATIONS);
-        byte[] hashPassword = new SimpleHash(properties.getHashAlgorithmName(),plainPassword,salt,properties.getHashIterations()).getBytes();
-        return Encodes.encodeHex(salt)+ Encodes.encodeHex(hashPassword);
+        byte[] hashPassword = new SimpleHash(properties.getHashAlgorithmName(), plainPassword, salt, properties.getHashIterations()).getBytes();
+        return Encodes.encodeHex(salt) + Encodes.encodeHex(hashPassword);
     }
 
-    public PageInfo<SysUserDetail> searchSysUser(String officeId, String name, Pageable page) {
+    public PageInfo<SysUserDetail> searchSysUser(String officeId, String keyword, Pageable page) {
         PageHelper.startPage(page.getPageNumber(), page.getPageSize());
-        List<SysUser> sysUsers;
-        if (StringUtils.isNotBlank(officeId)) {
-            SysUser q = new SysUser();
-            q.setOfficeId(officeId);
-            sysUsers = dao.select(q);
-        } else {
-            sysUsers = dao.logicalSelectAll();
-        }
+        List<SysUser> sysUsers = dao.getByOfficeAndName(officeId, keyword);
 
         List<SysUserDetail> staffDetails = sysUsers.stream().map(sysUser -> {
-            SysUserDetail sysUserDetail = DTOUtils.map(sysUser,SysUserDetail.class);
-            SysOffice office = dao.getSysUserOffice(sysUser);
-            sysUserDetail.setOffice(office);
-            sysUserDetail.setOfficeNameWithPath(sysOfficeService.getOfficeNameWithPath(office));
+            SysUserDetail sysUserDetail = fillOfficeInfo(sysUser);
             return sysUserDetail;
         }).collect(Collectors.toList());
 
         return new PageInfo<>(staffDetails);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public int updateSysUser(String sysUserId, SysUserForm form) {
+        Assert.hasText(sysUserId, "sysUser id can not be null");
+        SysUser sysUser = dao.selectByPrimaryKey(sysUserId);
+        DTOUtils.mapTo(form, sysUser);
+        sysUser.preUpdate();
+        return dao.updateByPrimaryKey(sysUser);
+    }
+
+    public SysUserDetail fillOfficeInfo(SysUser sysUser){
+        Assert.notNull(sysUser,"syUser can not be null");
+        SysUserDetail sysUserDetail = DTOUtils.map(sysUser, SysUserDetail.class);
+        SysOffice office = dao.getSysUserOffice(sysUser);
+        sysUserDetail.setOffice(office);
+        sysUserDetail.setOfficeNameWithPath(sysOfficeService.getOfficeNameWithPath(office));
+        //添加officeId sysUserDetail.setOfficeIdWithPath();
+        return sysUserDetail;
     }
 }

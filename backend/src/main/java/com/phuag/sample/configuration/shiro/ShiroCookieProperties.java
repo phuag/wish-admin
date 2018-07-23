@@ -3,7 +3,9 @@ package com.phuag.sample.configuration.shiro;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Created by vvvvvv on 2017/3/9.
+ *
+ * @author vvvvvv
+ * @date 2017/3/9
  */
 @ConfigurationProperties(prefix ="shiro.cookie")
 public class ShiroCookieProperties {

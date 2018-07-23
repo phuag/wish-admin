@@ -15,7 +15,7 @@ import java.util.Properties;
  * @author phuag
  * @version 2016-06-25
  */
-public abstract class Global {
+public class Global {
 
 
 	/**

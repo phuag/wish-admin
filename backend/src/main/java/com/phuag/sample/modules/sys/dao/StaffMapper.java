@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author vvvvvv
+ */
 @Repository(value="staffMapper")
 @Mapper
 public interface StaffMapper extends CrudDao<Staff> {

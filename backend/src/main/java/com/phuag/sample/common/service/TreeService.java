@@ -20,7 +20,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public abstract class TreeService<D extends TreeDao<T>, T extends TreeEntity<T>> extends CrudService<D, T> {
 
-    @Transactional(readOnly = false)
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public int save(T entity) {
 
         @SuppressWarnings("unchecked")

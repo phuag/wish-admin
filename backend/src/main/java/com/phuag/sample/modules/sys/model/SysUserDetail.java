@@ -8,40 +8,92 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by vvvvvv on 2017/12/27.
+ *
+ * @author vvvvvv
+ * @date 2017/12/27
  */
 @NoArgsConstructor
 @Data
 public class SysUserDetail implements Serializable {
     private String id;
 
-    private SysOffice office;// 归属部门
+    /**
+     * 归属部门
+     */
+    private SysOffice office;
 
-    private String officeNameWithPath;//喊路径的归属部门
+    /**
+     * 含路径的归属部门
+     */
+    private String officeNameWithPath;
 
-    private String loginName;// 登录名
+    /**
+     *含路径的归属部门id
+     */
+    private String officeIdWithPath;
 
-    private String no;// 工号
+    /**
+     * 登录名
+     */
+    private String loginName;
 
-    private String name;// 姓名
+    /**
+     * 工号
+     */
+    private String no;
 
-    private String sex;// 性别
+    /**
+     * 姓名
+     */
+    private String name;
 
-    private Date birth;// 生日
+    /**
+     * 性别
+     */
+    private String sex;
 
-    private String email;// 邮箱
+    /**
+     * 生日
+     */
+    private Date birth;
 
-    private String phone;// 电话
+    /**
+     * 邮箱
+     */
+    private String email;
 
-    private String mobile;	// 手机
+    /**
+     * 电话
+     */
+    private String phone;
 
-    private String userType;// 用户类型
+    /**
+     * 手机
+     */
+    private String mobile;
 
-    private String photo;// 头像
+    /**
+     * 用户类型
+     */
+    private String userType;
 
-    private String loginIp;// 最后登陆IP
+    /**
+     * 头像
+     */
+    private String photo;
 
-    private Date loginDate;//最后登录日期
+    /**
+     * 最后登陆IP
+     */
+    private String loginIp;
 
-    private String loginFlag;// 是否允许登陆
+    /**
+     * 最后登录日期
+     */
+    private Date loginDate;
+
+    /**
+     * 是否允许登录
+     */
+    private String loginFlag;
 }

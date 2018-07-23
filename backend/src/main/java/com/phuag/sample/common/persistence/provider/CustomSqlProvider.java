@@ -6,7 +6,9 @@ import tk.mybatis.mapper.mapperhelper.MapperTemplate;
 import tk.mybatis.mapper.mapperhelper.SqlHelper;
 
 /**
- * Created by vvvvvv on 2017/11/22.
+ *
+ * @author vvvvvv
+ * @date 2017/11/22
  */
 public class CustomSqlProvider extends MapperTemplate {
 
@@ -45,8 +47,6 @@ public class CustomSqlProvider extends MapperTemplate {
         sql.append(SqlHelper.updateSetColumns(entityClass, (String)null, true, this.isNotEmpty()));
         sql.append(SqlHelper.wherePKColumns(entityClass));
 
-//        sql.append(SqlHelper.selectAllColumns(entityClass));
-//        sql.append(SqlHelper.fromTable(entityClass, this.tableName(entityClass)));
         return sql.toString();
     }
 
@@ -55,7 +55,7 @@ public class CustomSqlProvider extends MapperTemplate {
         StringBuilder sql = new StringBuilder();
         sql.append(SqlHelper.updateTable(entityClass, this.tableName(entityClass)));
         sql.append("<set>");
-        sql.append("del_flag = ${@com.phuag.sample.common.persistence.BaseEntity@DEL_FLAG_DELETE},");
+        sql.append("del_flag = #{DEL_FLAG_DELETE},");
         sql.append("</set>");
         sql.append(SqlHelper.whereAllIfColumns(entityClass, this.isNotEmpty()));
         return sql.toString();

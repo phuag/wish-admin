@@ -31,7 +31,8 @@ public class Cryptos {
 	private static final String HMACSHA1 = "HmacSHA1";
 
 	private static final String DEFAULT_URL_ENCODING = "UTF-8";
-	private static final int DEFAULT_HMACSHA1_KEYSIZE = 160; //RFC2401
+	//RFC2401
+	private static final int DEFAULT_HMACSHA1_KEYSIZE = 160;
 	private static final int DEFAULT_AES_KEYSIZE = 128;
 	private static final int DEFAULT_IVSIZE = 16;
 	

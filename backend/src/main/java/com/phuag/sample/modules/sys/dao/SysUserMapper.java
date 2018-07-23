@@ -5,6 +5,7 @@ import com.phuag.sample.modules.sys.domain.SysOffice;
 import com.phuag.sample.modules.sys.domain.SysRole;
 import com.phuag.sample.modules.sys.domain.SysUser;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +30,12 @@ public interface SysUserMapper extends CrudDao<SysUser> {
 
     @Select("SELECT * FROM sys_office " +
             "WHERE del_flag = ${@com.phuag.sample.common.persistence.BaseEntity@DEL_FLAG_NORMAL}  " +
-            "and id = #{companyId,jdbcType=VARCHAR}")
+            "and id = #{officeId,jdbcType=VARCHAR}")
     SysOffice getSysUserOffice(SysUser user);
+
+//    @Select("SELECT * FROM sys_user " +
+//            "WHERE del_flag = ${@com.phuag.sample.common.persistence.BaseEntity@DEL_FLAG_NORMAL}  " +
+//            "AND LOWER(login_name) LIKE concat('%',LOWER(#{name,jdbcType=VARCHAR}),'%') " +
+//            "AND office_id = #{officeId,jdbcType=VARCHAR}")
+    List<SysUser> getByOfficeAndName(@Param("officeId") String officeId, @Param("keyword")String keyword);
 }

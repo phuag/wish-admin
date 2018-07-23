@@ -20,7 +20,7 @@ import java.util.List;
  * @author ThinkGem
  * @version 2014-05-16
  */
-@Transactional(readOnly = true)
+
 public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>> extends BaseService {
 
     /**
@@ -35,6 +35,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
      * @param id
      * @return
      */
+    @Transactional(readOnly = true,rollbackFor = Exception.class)
     public T select(String id) {
         return dao.selectByPrimaryKey(id);
     }
@@ -45,6 +46,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
      * @param entity
      * @return
      */
+    @Transactional(readOnly = true,rollbackFor = Exception.class)
     public T selectOne(T entity) {
         return dao.selectOne(entity);
     }
@@ -55,6 +57,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
      * @param entity
      * @return
      */
+    @Transactional(readOnly = true,rollbackFor = Exception.class)
     public List<T> select(T entity) {
         return dao.select(entity);
     }
@@ -66,6 +69,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
      * @param entity
      * @return
      */
+    @Transactional(readOnly = true,rollbackFor = Exception.class)
     public PageInfo<T> findPage(Pageable page, T entity) {
         PageHelper.startPage(page.getPageNumber(), page.getPageSize());
         return new PageInfo<T>(dao.select(entity));
@@ -76,7 +80,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
      *
      * @param entity
      */
-    @Transactional(readOnly = false)
+    @Transactional(rollbackFor = Exception.class)
     public int save(T entity) {
         if (entity.isNewRecord()) {
             entity.preInsert();
@@ -93,7 +97,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
      * @param entity 删除的条件封装在对象中
      * @return 数据库受影响的行数,所以大于0成功,等于0失败
      */
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false,rollbackFor = Exception.class)
     public int delete(T entity) {
         return dao.logicalDelete(entity);
     }
@@ -104,6 +108,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
      * @param id 需要删除对象的主键值
      * @return 数据库受影响的行数,所以大于0成功，等于0失败
      */
+    @Transactional(readOnly = false,rollbackFor = Exception.class)
     public int delete(String id) {
         return dao.logicalDeleteByPrimaryKey(id);
     }

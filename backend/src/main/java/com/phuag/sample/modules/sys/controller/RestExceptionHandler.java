@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Called when an exception occurs during request processing. Transforms exception message into JSON format.
  */
-@ControllerAdvice(annotations = RestController.class)
+//@ControllerAdvice(annotations = RestController.class)
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(RestExceptionHandler.class);

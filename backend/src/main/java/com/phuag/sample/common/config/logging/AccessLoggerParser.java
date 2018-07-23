@@ -7,7 +7,9 @@ import com.phuag.sample.common.logging.aop.MethodInterceptorHolder;
 import java.lang.reflect.Method;
 
 /**
- * Created by vvvvvv on 2017/12/6.
+ *
+ * @author vvvvvv
+ * @date 2017/12/6
  */
 public interface AccessLoggerParser {
     boolean support(Class clazz, Method method);
