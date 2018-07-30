@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import * as types from '../vuex/types'
 import store from '../vuex/store'
-import * as base64 from '../utils/base64'
+import * as base64 from '../common/js/base64'
 import router from '../router'
 
 axios.defaults.timeout = 5000
@@ -99,5 +99,9 @@ export const getSysUserListPage = params => { return axios.get(`${base}/api/sysU
 export const removeSysUser = params => { return axios.delete(`${base}/api/sysUser/` + params.id) }
 
 export const batchRemoveSysUser = params => { return axios.delete(`${base}/api/sysUser/batchremove`, { params: params }) }
+
+export const editSysUser = params => { return axios.put(`${base}/api/sysUser/` + params.id, params) }
+
+export const checkLoginName = params => { return axios.get(`${base}/api/sysUser/checkLoginName`, { params: params }) }
 
 export const getOfficeList = params => { return axios.get(`${base}/api/sysOffice`, { params: params }) }

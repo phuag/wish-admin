@@ -2,6 +2,9 @@
 package com.phuag.sample.exception;
 
 
+/**
+ * @author Administrator
+ */
 public class ResourceNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;

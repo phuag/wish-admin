@@ -78,18 +78,27 @@
   </sql>
 
   <sql id="Base_Column_List" >
-    id, company_id, office_id, login_name, password, no, name, email, phone, mobile, 
+    id, company_id, office_id, login_name, password, no, name, sex, email, phone, mobile,
     user_type, photo, login_ip, login_date, login_flag, create_by, create_date, update_by, 
     update_date, remarks, del_flag
   </sql>
 
 
   
-  <select id="selectSysUserByLoginName" resultMap="BaseResultMap">
+
+
+  <select id="getByOfficeAndName" resultMap="BaseResultMap">
     SELECT
-    <include refid="Base_Column_List"/>
+    *
     FROM sys_user
-    WHERE del_flag = 0 and login_name= #{loginName,jdbcType=VARCHAR}
+    WHERE del_flag = ${@com.phuag.sample.common.persistence.BaseEntity@DEL_FLAG_NORMAL}
+    <if test="keyword != null and keyword != ''">
+      AND (LOWER(login_name) LIKE concat('%',LOWER(#{keyword,jdbcType=VARCHAR}),'%')
+      OR LOWER(name) LIKE concat('%',LOWER(#{keyword,jdbcType=VARCHAR}),'%'))
+    </if>
+    <if test="officeId != null and officeId != ''">
+      AND office_id = #{officeId,jdbcType=VARCHAR}
+    </if>
   </select>
 
 </mapper>

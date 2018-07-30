@@ -81,7 +81,7 @@ public class ShiroAutoConfiguration {
     @Autowired(required = false)
     private Collection<SessionListener> listeners;
 
-    @Bean(name = "mainRealm")
+    /*@Bean(name = "mainRealm")
     @ConditionalOnMissingBean(name = "mainRealm")
     @ConditionalOnProperty(prefix = "shiro.realm.jdbc",name = "enabled",havingValue = "true")
     public Realm jdbcRealm(DataSource dataSource, CredentialsMatcher credentialsMatcher){
@@ -89,7 +89,7 @@ public class ShiroAutoConfiguration {
 
         //todo
         return jdbcRealm;
-    }
+    }*/
 
     @Bean(name = "mainRealm")
     @ConditionalOnMissingBean(name = "mainRealm")

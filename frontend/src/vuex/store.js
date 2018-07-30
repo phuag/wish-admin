@@ -1,5 +1,5 @@
-import Vuex from 'vuex'
 import Vue from 'vue'
+import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 import * as types from './types'
 
@@ -27,6 +27,9 @@ export default new Vuex.Store({
     [types.TITLE]: (state, data) => {
       state.title = data
     }
+  },
+  actions: {
+
   },
   plugins: [vuexLocal.plugin]
 })

@@ -51,7 +51,8 @@ public class SysUserController {
      */
     @PostMapping("/me")
     public ResponseEntity<SysUserDetail> user() {
-        SysUser principal = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        Subject subject = SecurityUtils.getSubject();
+        SysUser principal = (SysUser) subject.getPrincipal();
         log.debug("get principal @" + principal.toString());
         SysUserDetail sysUserDetail = sysUserService.fillOfficeInfo(principal);
         return new ResponseEntity<>(sysUserDetail, HttpStatus.OK);

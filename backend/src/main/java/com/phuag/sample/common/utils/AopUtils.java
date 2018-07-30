@@ -1,6 +1,5 @@
 package com.phuag.sample.common.utils;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -12,7 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by vvvvvv on 2017/12/7.
+ *
+ * @author vvvvvv
+ * @date 2017/12/7
  */
 public abstract class AopUtils {
 

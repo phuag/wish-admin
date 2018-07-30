@@ -15,11 +15,6 @@
         <result column="del_flag" property="delFlag" jdbcType="CHAR" />
     </resultMap>
 
-    <select id="searchStaffByName" resultMap="BaseResultMap">
-        SELECT
-        *
-        FROM staff
-        WHERE LOWER(name) LIKE concat(concat('%',LOWER(#{keyword,jdbcType=VARCHAR})),'%')
-    </select>
+
 
 </mapper>

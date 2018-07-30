@@ -4,6 +4,7 @@ import com.phuag.sample.common.config.ApiErrors;
 import com.phuag.sample.common.model.ResponseMessage;
 import com.phuag.sample.exception.InvalidRequestException;
 import com.phuag.sample.exception.ResourceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -23,11 +24,11 @@ import java.util.List;
 
 /**
  * Called when an exception occurs during request processing. Transforms exception message into JSON format.
+ * @author Administrator
  */
-//@ControllerAdvice(annotations = RestController.class)
+@ControllerAdvice(annotations = RestController.class)
+@Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(RestExceptionHandler.class);
 
     @Resource
     private MessageSource messageSource;

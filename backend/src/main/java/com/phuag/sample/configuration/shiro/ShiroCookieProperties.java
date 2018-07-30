@@ -13,7 +13,10 @@ public class ShiroCookieProperties {
 
     private String value;
 
-    private int maxAge = 60*60*24*365;// one year
+    /**
+     * one year
+     */
+    private int maxAge = 60*60*24*365;
 
     private int version = -1;
 

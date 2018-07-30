@@ -1,7 +1,9 @@
 package com.phuag.sample.common.logging.enums;
 
 /**
- * Created by vvvvvv on 2017/12/6.
+ *
+ * @author vvvvvv
+ * @date 2017/12/6
  */
 public enum SysLogType {
     LOGIN("1"),ACCESS("2"),OPER("3"),EXCEPION("4");

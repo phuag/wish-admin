@@ -1,7 +1,6 @@
 package com.phuag.sample;
 
 import com.phuag.sample.modules.sys.service.SysUserService;
-import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  *
@@ -24,8 +24,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @SpringBootApplication
 @Configuration
-@EnableSwagger2
 @MapperScan(basePackages = "com.phuag.sample.modules")
+@EnableSwagger2
 public class Application {
 
     private static final Logger log = LoggerFactory
@@ -35,7 +35,7 @@ public class Application {
     private SysUserService sysUserService;
 
     @Bean
-    public Docket config() {
+    public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .useDefaultResponseMessages(false)

@@ -19,7 +19,6 @@ import java.io.Serializable;
  * @author ThinkGem
  * @version 2014-05-16
  */
-//@SupTreeList
 public abstract class BaseEntity<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -54,7 +53,6 @@ public abstract class BaseEntity<T> implements Serializable {
 		this.id = id;
 	}
 
-//	@SupCol(isUnique="true", isHide="true")
 	public String getId() {
 		return id;
 	}

@@ -2,6 +2,9 @@
 package com.phuag.sample.common.config;
 
 
+/**
+ * @author Administrator
+ */
 public class ApiErrors {
 
     private static final String PREFIX = "errors.";

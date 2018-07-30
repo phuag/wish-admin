@@ -16,66 +16,66 @@
 </template>
 
 <script>
-  import { requestLogin } from '../api/api'
-  import router from '../router'
-  import store from '../vuex/store'
-  import * as types from '../vuex/types'
-  import * as base64 from '../utils/base64'
-  export default {
-    data () {
-      return {
-        logining: false,
-        ruleForm2: {
-          account: 'thinkgem',
-          checkPass: 'admin'
-        },
-        rules2: {
-          account: [
-            { required: true, message: '请输入账号', trigger: 'blur' }
-            // { validator: validaePass }
-          ],
-          checkPass: [
-            { required: true, message: '请输入密码', trigger: 'blur' }
-            // { validator: validaePass2 }
-          ]
-        },
-        checked: true
-      }
-    },
-    mounted () {
-      this.$store.commit(types.TITLE, 'Wish-Admin')
-    },
-    methods: {
-      handleReset2 () {
-        this.$refs.ruleForm2.resetFields()
+import { requestLogin } from '../api/api'
+import router from '../router'
+import store from '../vuex/store'
+import * as types from '../vuex/types'
+import * as base64 from '../common/js/base64'
+export default {
+  data () {
+    return {
+      logining: false,
+      ruleForm2: {
+        account: 'thinkgem',
+        checkPass: 'admin'
       },
-      handleSubmit2 (ev) {
-        // var _this = this
-        this.$refs.ruleForm2.validate((valid) => {
-          if (valid) {
-            // _this.$router.replace('/table')
-            this.logining = true
-            let loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass }
-            requestLogin(loginParams).then(data => {
-              this.logining = false
-              let user = data
+      rules2: {
+        account: [
+          { required: true, message: '请输入账号', trigger: 'blur' }
+          // { validator: validaePass }
+        ],
+        checkPass: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+          // { validator: validaePass2 }
+        ]
+      },
+      checked: true
+    }
+  },
+  mounted () {
+    this.$store.commit(types.TITLE, 'Wish-Admin')
+  },
+  methods: {
+    handleReset2 () {
+      this.$refs.ruleForm2.resetFields()
+    },
+    handleSubmit2 (ev) {
+      // var _this = this
+      this.$refs.ruleForm2.validate((valid) => {
+        if (valid) {
+          // _this.$router.replace('/table')
+          this.logining = true
+          let loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass }
+          requestLogin(loginParams).then(data => {
+            this.logining = false
+            let user = data
 
-              // sessionStorage.setItem('user', JSON.stringify(user));
-              let tokenData = { token: base64.encode(loginParams.username + ':' + loginParams.password), user: user }
-              store.commit(types.LOGIN, tokenData)
-              // console.log(store.state.user)
-              router.push({ path: '/' })
-            }).catch(() => {
-              this.logining = false
-            })
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      }
+            // sessionStorage.setItem('user', JSON.stringify(user));
+            let tokenData = { token: base64.encode(loginParams.username + ':' + loginParams.password), user: user }
+            store.commit(types.LOGIN, tokenData)
+            // console.log(store.state.user)
+            router.push({ path: '/' })
+          }).catch(() => {
+            this.logining = false
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

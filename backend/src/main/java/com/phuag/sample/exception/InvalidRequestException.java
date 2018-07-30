@@ -3,6 +3,9 @@ package com.phuag.sample.exception;
 import org.springframework.validation.BindingResult;
 
 
+/**
+ * @author Administrator
+ */
 public class InvalidRequestException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;

@@ -47,7 +47,6 @@ public class IdGen /*implements IdGenerator, SessionIdGenerator */{
 	/**
 	 * Activiti ID 生成
 	 */
-//	@Override
 	public String getNextId() {
 		return IdGen.uuid();
 	}

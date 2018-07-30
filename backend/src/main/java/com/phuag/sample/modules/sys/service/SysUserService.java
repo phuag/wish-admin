@@ -91,7 +91,7 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
     }
 
     /**
-     * 生成安全的密码，生成随机的16位salt并经 过1024次sha-1 hash
+     * 生成安全的密码，生成随机的16位salt并经过1024次sha-1 hash
      */
     public String encryptPassword(String plainPassword) {
         byte[] salt = Salt.generateSalt(properties.getSaltSize());

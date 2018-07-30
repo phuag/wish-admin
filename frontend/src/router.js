@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from '../vuex/store'
-// import * as types from '../vuex/types'
+import store from './vuex/store'
+
 import Login from '@/components/Login.vue'
 import NotFound from '@/components/404.vue'
 import Home from '@/components/Home.vue'
@@ -32,7 +32,7 @@ const routes = [
     name: '用户和机构',
     iconCls: 'el-icon-message', // 图标样式class
     children: [
-      { path: '/main', component: Main, name: '主页', hidden: true },
+      { path: '/main', component: Main, name: '个人设置', hidden: 'true' },
       { path: '/sysUser', component: SysUser, name: '用户管理' },
       { path: '/staff', component: Staff, name: 'Staff' },
       { path: '/form', component: Form, name: 'Form' },
@@ -46,16 +46,11 @@ const routes = [
   }
 ]
 
-// if (localStorage.getItem('token')) {
-//   store.commit(types.LOGIN, localStorage.getItem('token'))
-// }
+let routesOpenToPublic = ['/login', '/authredirect', '/reset', '/sendpwd']
 
 const router = new Router({
   routes
 })
-
-let routesOpenToPublic = ['/login', '/authredirect', '/reset', '/sendpwd']
-
 router.beforeEach((to, from, next) => {
   let user = store.state.user
   if (user && user !== '') {

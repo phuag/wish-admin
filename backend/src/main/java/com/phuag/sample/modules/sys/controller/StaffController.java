@@ -29,7 +29,6 @@ public class StaffController {
     @Autowired
     private StaffService staffService;
 
-    //page stuff is config to controller layer,i wonder if it was the best way
     @GetMapping
     @ResponseBody
     public ResponseEntity<PageInfo<StaffDetail>> getAllStaff(
