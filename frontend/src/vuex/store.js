@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
-import * as types from './types'
-
+import user from './modules/user'
+import permission from './modules/permission'
+import getters from './getters'
 Vue.use(Vuex)
 
 const vuexLocal = new VuexPersistence({
@@ -10,26 +11,10 @@ const vuexLocal = new VuexPersistence({
 })
 
 export default new Vuex.Store({
-  state: {
-    user: '',
-    token: '',
-    title: ''
+  modules: {
+    user,
+    permission
   },
-  mutations: {
-    [types.LOGIN]: (state, data) => {
-      state.token = data.token
-      state.user = data.user
-    },
-    [types.LOGOUT]: (state) => {
-      state.token = ''
-      state.user = ''
-    },
-    [types.TITLE]: (state, data) => {
-      state.title = data
-    }
-  },
-  actions: {
-
-  },
+  getters,
   plugins: [vuexLocal.plugin]
 })

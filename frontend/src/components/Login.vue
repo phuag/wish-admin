@@ -17,7 +17,7 @@
 
 <script>
 import { requestLogin } from '../api/api'
-import router from '../router'
+// import router from '../router'
 import store from '../vuex/store'
 import * as types from '../vuex/types'
 import * as base64 from '../common/js/base64'
@@ -50,7 +50,7 @@ export default {
       this.$refs.ruleForm2.resetFields()
     },
     handleSubmit2 (ev) {
-      // var _this = this
+      var _this = this
       this.$refs.ruleForm2.validate((valid) => {
         if (valid) {
           // _this.$router.replace('/table')
@@ -60,11 +60,11 @@ export default {
             this.logining = false
             let user = data
 
-            // sessionStorage.setItem('user', JSON.stringify(user));
             let tokenData = { token: base64.encode(loginParams.username + ':' + loginParams.password), user: user }
-            store.commit(types.LOGIN, tokenData)
+            // store.commit(types.LOGIN, tokenData)
+            store.dispatch('Login', tokenData)
             // console.log(store.state.user)
-            router.push({ path: '/' })
+            _this.$router.push({ path: '/' })
           }).catch(() => {
             this.logining = false
           })

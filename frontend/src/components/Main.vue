@@ -47,7 +47,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click.native="modifyPasswordSubmit" :loading="modifyPasswordLoading">保存</el-button>
-        <el-button @click="resetForm('ruleForm2')">重置</el-button>
+        <el-button @click="resetForm('modifyPasswordForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </el-tab-pane>
@@ -58,7 +58,7 @@
 <script>
 import util from '../common/js/util'
 import store from '../vuex/store'
-import { getOfficeList, editSysUser } from '../api/api'
+import { getOfficeList, editSysUser, modifyPassword } from '../api/api'
 export default {
   data () {
     var validateConfirmNewPassword = (rule, value, callback) => {
@@ -66,7 +66,7 @@ export default {
         callback(new Error('请再次输入密码'))
       } else if (value !== this.modifyPasswordForm.newPassword) {
         callback(new Error('两次输入密码不一致!'))
-      } else if (value !== this.modifyPasswordForm.oldPassword) {
+      } else if (value === this.modifyPasswordForm.oldPassword) {
         callback(new Error('新密码不能与原密码一致!'))
       } else {
         callback()
@@ -154,12 +154,29 @@ export default {
       })
     },
     modifyPasswordSubmit: function () {
-
+      this.$refs.modifyPasswordForm.validate((valid) => {
+        if (valid) {
+          this.$confirm('确认提交吗?', '提示', {}).then(() => {
+            this.modifyPasswordLoading = true
+            let para = Object.assign({}, this.modifyPasswordForm)
+            modifyPassword(para).then((res) => {
+              this.modifyPasswordLoading = false
+              this.$message({
+                message: '提交成功',
+                type: 'success'
+              })
+            })
+          })
+        }
+      })
+    },
+    resetForm: function (formName) {
+      this.$refs[formName].resetFields()
     }
   },
   mounted () {
     this.initOfficeOptions()
-    this.profileForm = store.state.user
+    this.profileForm = store.getters.user
     this.profileForm.officeIds = this.profileForm.office.parentIds.split(',')
     this.profileForm.officeIds.push(this.profileForm.office.id)
   }
@@ -168,6 +185,6 @@ export default {
 
 <style scoped>
 .el-tab-pane {
-  max-width: 900;
+  max-width: 500px;
 }
 </style>

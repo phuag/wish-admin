@@ -34,6 +34,10 @@ export default {
   margin-right: 10px;
 }
 
+.el-cascader {
+  width: 100%;
+}
+
 .toolbar {
   background: #f2f2f2;
   padding: 10px;

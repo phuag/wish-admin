@@ -4,7 +4,7 @@
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
         <el-form-item>
-          <el-input v-model="filters.name" placeholder="姓名" icon="search"></el-input>
+          <el-input v-model="filters.name" placeholder="姓名" suffix-icon="search"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" v-on:click="getStaffs">查询</el-button>

@@ -3,10 +3,8 @@ package com.phuag.sample.modules.sys.controller;
 import com.github.pagehelper.PageInfo;
 import com.phuag.sample.common.config.Constants;
 import com.phuag.sample.common.model.ResponseMessage;
-import com.phuag.sample.common.utils.DTOUtils;
-import com.phuag.sample.modules.sys.domain.SysOffice;
+import com.phuag.sample.modules.sys.domain.SysMenu;
 import com.phuag.sample.modules.sys.domain.SysUser;
-import com.phuag.sample.modules.sys.model.StaffForm;
 import com.phuag.sample.modules.sys.model.SysUserDetail;
 import com.phuag.sample.modules.sys.model.SysUserForm;
 import com.phuag.sample.modules.sys.service.SysUserService;
@@ -19,11 +17,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
+/**
+ * @author Administrator
+ */
 @RestController
 @RequestMapping(value = Constants.URI_API + Constants.URI_SYS_USER)
 @Slf4j
@@ -58,6 +59,13 @@ public class SysUserController {
         return new ResponseEntity<>(sysUserDetail, HttpStatus.OK);
     }
 
+    @PostMapping("/myMenu")
+    public ResponseEntity<List<SysMenu>> menu() {
+        SysUser prinvipal = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        List<SysMenu> menus = sysUserService.getSysMenu(prinvipal);
+        return new ResponseEntity<>(menus, HttpStatus.OK);
+    }
+
     @PostMapping("/logout")
     public ResponseEntity<ResponseMessage> logout() {
         Subject subject = SecurityUtils.getSubject();
@@ -79,23 +87,50 @@ public class SysUserController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity updateStaff(@PathVariable("id") String sysUserId, @RequestBody SysUserForm form) {
+    public ResponseEntity updateSysUser(@PathVariable("id") String sysUserId, @RequestBody SysUserForm form) {
         log.debug("update sysUser id@{},sysUser@{}", sysUserId, form);
-        int res = sysUserService.updateSysUser(sysUserId,form);
+        int res = sysUserService.updateSysUser(sysUserId, form);
         log.debug("updated res is @{}", res);
         return new ResponseEntity(ResponseMessage.info("update sysUser success,res=" + res), HttpStatus.OK);
+    }
+
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity insertSysUser(@RequestBody SysUserForm form) {
+        log.debug("insert sysUser@{}", form);
+        int res = sysUserService.insertSysUser(form);
+        log.debug("saved res is @{}", res);
+        return new ResponseEntity(ResponseMessage.info("insert success,res=" + res), HttpStatus.OK);
     }
 
     @GetMapping("/checkLoginName")
     @ResponseBody
     public ResponseEntity<Boolean> checkLoginName(@RequestParam(value = "oldLoginName", required = false) String oldLoginName,
-                                 @RequestParam(value = "loginName", required = false) String loginName) {
+                                                  @RequestParam(value = "loginName") String loginName) {
         if (loginName != null && loginName.equals(oldLoginName)) {
-            return new ResponseEntity(true,HttpStatus.OK);
+            return new ResponseEntity(true, HttpStatus.OK);
         } else if (loginName != null && sysUserService.getSysUserByLoginName(loginName) == null) {
-            return new ResponseEntity(true,HttpStatus.OK);
+            return new ResponseEntity(true, HttpStatus.OK);
         }
-        return new ResponseEntity(false,HttpStatus.OK);
+        return new ResponseEntity(false, HttpStatus.OK);
     }
+
+    @GetMapping("/modifyPwd")
+    @ResponseBody
+    public ResponseEntity modifyPwd(@RequestParam(value = "oldPassword") String oldPassword,
+                                    @RequestParam(value = "newPassword") String newPassword) {
+        Subject subject = SecurityUtils.getSubject();
+        SysUser principal = (SysUser) subject.getPrincipal();
+        Assert.hasText(oldPassword, "oldPassword must have text");
+        Assert.hasText(newPassword, "new password must have text");
+        if (sysUserService.validatePassword(oldPassword, principal.getPassword())) {
+            principal.setPassword(newPassword);
+            sysUserService.updatePassword(principal);
+            return new ResponseEntity(ResponseMessage.success("modifyPwd success"), HttpStatus.OK);
+        }
+
+        return new ResponseEntity(ResponseMessage.info("modifyPwd failed, cause old password is wrong"), HttpStatus.OK);
+    }
+
 
 }

@@ -9,6 +9,7 @@ import com.phuag.sample.common.utils.DTOUtils;
 import com.phuag.sample.common.utils.Encodes;
 import com.phuag.sample.configuration.shiro.ShiroProperties;
 import com.phuag.sample.modules.sys.dao.SysUserMapper;
+import com.phuag.sample.modules.sys.domain.SysMenu;
 import com.phuag.sample.modules.sys.domain.SysOffice;
 import com.phuag.sample.modules.sys.domain.SysRole;
 import com.phuag.sample.modules.sys.domain.SysUser;
@@ -21,18 +22,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author Administrator
  * @date 2016/3/27 0027
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class SysUserService extends CrudService<SysUserMapper, SysUser> {
 
     @Autowired
@@ -49,8 +50,13 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
         return sessionDao;
     }
 
-    public int insertSysUser(SysUser sysUser) {
-        return dao.insert(sysUser);
+    public int insertSysUser(SysUserForm form) {
+        SysUser sysUser = DTOUtils.map(form, SysUser.class);
+        if (StringUtils.isEmpty(sysUser.getPassword())) {
+            sysUser.setPassword("123456");
+            updatePassword(sysUser);
+        }
+        return super.save(sysUser);
     }
 
     public SysUser getSysUserById(String id) {
@@ -99,6 +105,13 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
         return Encodes.encodeHex(salt) + Encodes.encodeHex(hashPassword);
     }
 
+    public boolean validatePassword(String plainPassword, String password) {
+        String plain = Encodes.unescapeHtml(plainPassword);
+        byte[] salt = Encodes.decodeHex(password.substring(0, 16));
+        byte[] hashPassword = new SimpleHash(properties.getHashAlgorithmName(), plain, salt, properties.getHashIterations()).getBytes();
+        return password.equals(Encodes.encodeHex(salt) + Encodes.encodeHex(hashPassword));
+    }
+
     public PageInfo<SysUserDetail> searchSysUser(String officeId, String keyword, Pageable page) {
         PageHelper.startPage(page.getPageNumber(), page.getPageSize());
         List<SysUser> sysUsers = dao.getByOfficeAndName(officeId, keyword);
@@ -120,8 +133,8 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
         return dao.updateByPrimaryKey(sysUser);
     }
 
-    public SysUserDetail fillOfficeInfo(SysUser sysUser){
-        Assert.notNull(sysUser,"syUser can not be null");
+    public SysUserDetail fillOfficeInfo(SysUser sysUser) {
+        Assert.notNull(sysUser, "syUser can not be null");
         SysUserDetail sysUserDetail = DTOUtils.map(sysUser, SysUserDetail.class);
         SysOffice office = dao.getSysUserOffice(sysUser);
         sysUserDetail.setOffice(office);
@@ -129,4 +142,12 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
         //添加officeId sysUserDetail.setOfficeIdWithPath();
         return sysUserDetail;
     }
+
+    public List<SysMenu> getSysMenu(SysUser sysUser){
+        Assert.notNull(sysUser, "syUser can not be null");
+        List<SysMenu> sysMenus = dao.getSysMenu(sysUser);
+        return sysMenus;
+    }
+
+
 }

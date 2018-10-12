@@ -20,10 +20,12 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Created by Administrator on 2015/11/17 0017.
+ *
+ * @author Administrator
+ * @date 2015/11/17 0017
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class StaffService extends CrudService<StaffMapper, Staff> {
 

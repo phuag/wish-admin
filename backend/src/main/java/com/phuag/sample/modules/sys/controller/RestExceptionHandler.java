@@ -26,7 +26,7 @@ import java.util.List;
  * Called when an exception occurs during request processing. Transforms exception message into JSON format.
  * @author Administrator
  */
-@ControllerAdvice(annotations = RestController.class)
+//@ControllerAdvice(annotations = RestController.class)
 @Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 

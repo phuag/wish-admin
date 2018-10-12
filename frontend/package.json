@@ -9,12 +9,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "element-ui": "^2.4.5",
+    "element-ui": "^2.4.7",
     "font-awesome": "^4.7.0",
-    "vue": "^2.5.16",
+    "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "vuex-persist": "^1.4.3"
+    "vuex-persist": "^1.5.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-beta.15",
@@ -23,7 +23,7 @@
     "@vue/eslint-config-standard": "^3.0.0-rc.3",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
-    "vue-template-compiler": "^2.5.16"
+    "vue-template-compiler": "^2.5.17"
   },
   "eslintConfig": {
     "root": true,

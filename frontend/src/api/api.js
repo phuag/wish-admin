@@ -12,8 +12,8 @@ let base = ''
 
 axios.interceptors.request.use(
   config => {
-    if (store.state.token) {
-      config.headers.Authorization = `Basic ${store.state.token}`
+    if (store.state.user.token) {
+      config.headers.Authorization = `Basic ${store.state.user.token}`
     }
     return config
   },
@@ -72,6 +72,8 @@ export const requestLogout = () => {
   return axios.post(`${base}/api/sysUser/logout`)
 }
 
+export const getUserMenu = () => { return axios.post(`${base}/api/sysUser/myMenu`) }
+
 export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }) }
 
 export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }) }
@@ -102,6 +104,10 @@ export const batchRemoveSysUser = params => { return axios.delete(`${base}/api/s
 
 export const editSysUser = params => { return axios.put(`${base}/api/sysUser/` + params.id, params) }
 
+export const addSysUser = params => { return axios.post(`${base}/api/sysUser/`, params) }
+
 export const checkLoginName = params => { return axios.get(`${base}/api/sysUser/checkLoginName`, { params: params }) }
+
+export const modifyPassword = params => { return axios.get(`${base}/api/sysUser/modifyPwd`, { params: params }) }
 
 export const getOfficeList = params => { return axios.get(`${base}/api/sysOffice`, { params: params }) }

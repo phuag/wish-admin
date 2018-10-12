@@ -1,6 +1,7 @@
 package com.phuag.sample.modules.sys.dao;
 
 import com.phuag.sample.common.persistence.CrudDao;
+import com.phuag.sample.modules.sys.domain.SysMenu;
 import com.phuag.sample.modules.sys.domain.SysOffice;
 import com.phuag.sample.modules.sys.domain.SysRole;
 import com.phuag.sample.modules.sys.domain.SysUser;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository(value="sysUserMapper")
+@Repository(value = "sysUserMapper")
 @Mapper
 public interface SysUserMapper extends CrudDao<SysUser> {
 
@@ -37,5 +38,22 @@ public interface SysUserMapper extends CrudDao<SysUser> {
 //            "WHERE del_flag = ${@com.phuag.sample.common.persistence.BaseEntity@DEL_FLAG_NORMAL}  " +
 //            "AND LOWER(login_name) LIKE concat('%',LOWER(#{name,jdbcType=VARCHAR}),'%') " +
 //            "AND office_id = #{officeId,jdbcType=VARCHAR}")
-    List<SysUser> getByOfficeAndName(@Param("officeId") String officeId, @Param("keyword")String keyword);
+
+    /**
+     * 根据单位id以及关键字查找系统用户
+     * sql语句在xml文件中
+     *
+     * @param officeId 用户单位id
+     * @param keyword  关键字
+     * @return
+     */
+    List<SysUser> getByOfficeAndName(@Param("officeId") String officeId, @Param("keyword") String keyword);
+
+    @Select("SELECT * FROM sys_menu " +
+            "WHERE del_flag = ${@com.phuag.sample.common.persistence.BaseEntity@DEL_FLAG_NORMAL}  " +
+            "and id in (" +
+            "select t.menu_id from sys_role_menu t, sys_user_role w " +
+            "where w.role_id = t.role_id and w.user_id =#{id,jdbcType=VARCHAR}" +
+            ")")
+    List<SysMenu> getSysMenu(SysUser sysUser);
 }

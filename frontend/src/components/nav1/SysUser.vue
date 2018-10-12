@@ -8,7 +8,7 @@
           </el-cascader>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="filters.name" placeholder="登录名或姓名" icon="search"></el-input>
+          <el-input v-model="filters.name" placeholder="登录名或姓名" suffix-icon="search"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" v-on:click="getSysUsers">查询</el-button>
@@ -20,7 +20,7 @@
           <el-button type="primary">导入</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleAdd">新增</el-button>
+          <el-button type="primary" v-if="hasPerm('sysUser:add')" @click="handleAdd">新增</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -41,10 +41,8 @@
       </el-table-column>
       <el-table-column prop="officeNameWithPath" label="所在部门" min-width="160" sortable>
       </el-table-column>
-      <el-table-column prop="phone" label="电话" width="120" sortable>
-      </el-table-column>
       <el-table-column label="操作" width="150">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -101,7 +99,11 @@
     </el-dialog>
     <!--新增界面-->
     <el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false">
-      <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
+      <el-form :model="addForm" label-width="100px" :rules="addFormRules" ref="addForm">
+        <el-form-item label="所在部门" prop="officeIds">
+          <el-cascader clearable change-on-select v-model="addForm.officeIds" :options="officeOptions" :props="props" placeholder="所在部门">
+          </el-cascader>
+        </el-form-item>
         <el-form-item label="登录名" prop="loginName">
           <el-input v-model="addForm.loginName" auto-complete="off"></el-input>
         </el-form-item>
@@ -110,18 +112,18 @@
         </el-form-item>
         <el-form-item label="性别">
           <el-radio-group v-model="addForm.sex">
-            <el-radio class="radio" :label="1">男</el-radio>
-            <el-radio class="radio" :label="0">女</el-radio>
+            <el-radio class="radio" label="男">男</el-radio>
+            <el-radio class="radio" label="女">女</el-radio>
           </el-radio-group>
-        </el-form-item>
-        <el-form-item label="年龄">
-          <el-input-number v-model="addForm.age" :min="0" :max="200"></el-input-number>
         </el-form-item>
         <el-form-item label="生日">
           <el-date-picker type="date" placeholder="选择日期" v-model="addForm.birth"></el-date-picker>
         </el-form-item>
-        <el-form-item label="地址">
-          <el-input type="textarea" v-model="addForm.addr"></el-input>
+        <el-form-item label="是否允许入网">
+          <el-radio-group v-model="addForm.loginFlag">
+            <el-radio class="radio" label="1">是</el-radio>
+            <el-radio class="radio" label="0">否</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -135,7 +137,7 @@
 <script>
 import util from '../../common/js/util'
 // import NProgress from 'nprogress'
-import { getSysUserListPage, getOfficeList, removeSysUser, batchRemoveUser, editSysUser, addUser, checkLoginName } from '../../api/api'
+import { getSysUserListPage, getOfficeList, removeSysUser, batchRemoveUser, editSysUser, addSysUser, checkLoginName } from '../../api/api'
 import router from '../../router'
 
 export default {
@@ -202,9 +204,12 @@ export default {
       addFormVisible: false, // 新增界面是否显示
       addLoading: false,
       addFormRules: {
+        officeIds: [
+          { type: 'array', required: true, message: '请选择部门', trigger: 'change' }
+        ],
         loginName: [
           // { required: true, message: '请输入登录名', trigger: 'blur' },
-          { validator: validateUnique, trigger: 'blur' }
+          { required: true, validator: validateUnique, trigger: 'blur' }
         ],
         name: [
           { required: true, message: '请输入姓名', trigger: 'blur' }
@@ -212,11 +217,12 @@ export default {
       },
       // 新增界面数据
       addForm: {
+        loginName: '',
         name: '',
-        sex: -1,
-        age: 0,
+        sex: '',
         birth: '',
-        addr: ''
+        loginFlag: '0',
+        officeIds: []
       }
 
     }
@@ -336,7 +342,6 @@ export default {
       this.addForm = {
         name: '',
         sex: -1,
-        age: 0,
         birth: '',
         addr: ''
       }
@@ -375,7 +380,8 @@ export default {
             // NProgress.start()
             let para = Object.assign({}, this.addForm)
             para.birth = (!para.birth || para.birth === '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd')
-            addUser(para).then((res) => {
+            para.officeId = para.officeIds.pop()
+            addSysUser(para).then((res) => {
               this.addLoading = false
               // NProgress.done()
               this.$message({
