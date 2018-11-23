@@ -28,7 +28,7 @@ public class SysLogController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<PageInfo<SysLog>> getAllStaff(
+    public ResponseEntity<PageInfo<SysLog>> getAllLog(
             @RequestParam(value = "q", required = false) String keyword,
             @PageableDefault(page = 0, size = 20, sort = "staffId", direction = Sort.Direction.DESC) Pageable page) {
         log.debug("get all staffInfo of q@{},page@{}", keyword, page);

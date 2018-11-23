@@ -28,9 +28,9 @@ public class SysUserDetail implements Serializable {
     private String officeNameWithPath;
 
     /**
-     *含路径的归属部门id
+     *归属部门id
      */
-    private String officeIdWithPath;
+    private String officeId;
 
     /**
      * 登录名

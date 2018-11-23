@@ -1,5 +1,6 @@
 package com.phuag.sample.configuration.shiro;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -7,6 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date 2017/3/10
  */
 @ConfigurationProperties(prefix = "shiro.sign-in")
+@Data
 public class ShiroSignInProperties {
 
     /**
@@ -21,27 +23,4 @@ public class ShiroSignInProperties {
 
     private String rememberMeParam = "rememberMe";
 
-    public String getUserParam() {
-        return userParam;
-    }
-
-    public void setUserParam(String userParam) {
-        this.userParam = userParam;
-    }
-
-    public String getPasswordParam() {
-        return passwordParam;
-    }
-
-    public void setPasswordParam(String passwordParam) {
-        this.passwordParam = passwordParam;
-    }
-
-    public String getRememberMeParam() {
-        return rememberMeParam;
-    }
-
-    public void setRememberMeParam(String rememberMeParam) {
-        this.rememberMeParam = rememberMeParam;
-    }
 }

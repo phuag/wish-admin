@@ -69,7 +69,7 @@ public class UserPasswordDBRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(
             PrincipalCollection principals) {
         SysUser principal = (SysUser) getAvailablePrincipal(principals);
-        String username = (String) principals.getPrimaryPrincipal();
+//        String username = (String) principals.getPrimaryPrincipal();
         if (!allowUserMutiLogin){
             //不允许多用户同时登录，同一用户则需踢掉前面登录上的session
             Collection<Session> sessions =sysUserService.getSessionDao().getActiveSessions();
@@ -89,8 +89,8 @@ public class UserPasswordDBRealm extends AuthorizingRealm {
 
         }
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        SysUser user = sysUserService.getSysUserByLoginName(username);
-        List<SysRole> uroles = sysUserService.getSysUserRolesByUser(user);
+//        SysUser user = sysUserService.getSysUserByLoginName(username);
+        List<SysRole> uroles = sysUserService.getSysUserRolesByUser(principal);
         Set<String> perms = new HashSet<String>();
 //        for (SysRole role : uroles) {
 //            Set<Resource> resources = role.getResources();
@@ -105,6 +105,7 @@ public class UserPasswordDBRealm extends AuthorizingRealm {
 //            }
 //        }
         authorizationInfo.addStringPermissions(perms);
+        authorizationInfo.addStringPermission("user");
         return authorizationInfo;
     }
 }

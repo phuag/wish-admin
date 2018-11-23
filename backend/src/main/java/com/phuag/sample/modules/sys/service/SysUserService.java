@@ -115,13 +115,11 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
     public PageInfo<SysUserDetail> searchSysUser(String officeId, String keyword, Pageable page) {
         PageHelper.startPage(page.getPageNumber(), page.getPageSize());
         List<SysUser> sysUsers = dao.getByOfficeAndName(officeId, keyword);
+        List<SysUserDetail> sysUserDetails = DTOUtils.mapList(sysUsers,SysUserDetail.class);
 
-        List<SysUserDetail> staffDetails = sysUsers.stream().map(sysUser -> {
-            SysUserDetail sysUserDetail = fillOfficeInfo(sysUser);
-            return sysUserDetail;
-        }).collect(Collectors.toList());
-
-        return new PageInfo<>(staffDetails);
+        PageInfo<SysUserDetail> sysUserDetailPageInfo = PageInfo.of(sysUserDetails);
+        sysUserDetailPageInfo.getList().forEach(this::fillOfficeInfo);
+        return sysUserDetailPageInfo;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -133,13 +131,13 @@ public class SysUserService extends CrudService<SysUserMapper, SysUser> {
         return dao.updateByPrimaryKey(sysUser);
     }
 
-    public SysUserDetail fillOfficeInfo(SysUser sysUser) {
-        Assert.notNull(sysUser, "syUser can not be null");
-        SysUserDetail sysUserDetail = DTOUtils.map(sysUser, SysUserDetail.class);
-        SysOffice office = dao.getSysUserOffice(sysUser);
+    public SysUserDetail fillOfficeInfo(SysUserDetail sysUserDetail) {
+        Assert.notNull(sysUserDetail, "sysUserDetail can not be null");
+        Assert.hasText(sysUserDetail.getOfficeId(),"sysUserDetail.getOfficeId must has text");
+//        SysUserDetail sysUserDetail = DTOUtils.map(sysUser, SysUserDetail.class);
+        SysOffice office = sysOfficeService.select(sysUserDetail.getOfficeId());
         sysUserDetail.setOffice(office);
         sysUserDetail.setOfficeNameWithPath(sysOfficeService.getOfficeNameWithPath(office));
-        //添加officeId sysUserDetail.setOfficeIdWithPath();
         return sysUserDetail;
     }
 

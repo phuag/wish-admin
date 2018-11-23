@@ -52,14 +52,14 @@ public class ShiroConfiguration {
     }
 
     @Bean(name = "securityManager")
-    @DependsOn(value = {"cacheManager", "sessionManager", "rememberMeManager", "mainRealm"})
-    public DefaultSecurityManager defaultSecurityManager(Realm realm,RememberMeManager rememberMeManager,
+    @DependsOn(value = {"cacheManager", "sessionManager",  "mainRealm"})
+    public DefaultSecurityManager defaultSecurityManager(Realm realm,
                                                          CacheManager cacheManager, SessionManager sessionManager){
         DefaultWebSecurityManager sm = new DefaultWebSecurityManager();
         sm.setRealm(realm);
         sm.setCacheManager(cacheManager);
         sm.setSessionManager(sessionManager);
-        sm.setRememberMeManager(rememberMeManager);
+//        sm.setRememberMeManager(rememberMeManager);
         return sm;
     }
 

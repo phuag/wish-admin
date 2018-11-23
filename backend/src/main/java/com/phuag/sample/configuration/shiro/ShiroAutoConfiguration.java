@@ -115,38 +115,39 @@ public class ShiroAutoConfiguration {
         return ehCacheManager;
     }
 
-    @Bean
-    @ConditionalOnMissingBean(Cookie.class)
-    public Cookie rememberMeCookie(){
-        SimpleCookie rememberMeCookie = new SimpleCookie();
-        rememberMeCookie.setName(shiroSignInProperties.getRememberMeParam());
-        rememberMeCookie.setMaxAge(shiroCookieProperties.getMaxAge());
-        rememberMeCookie.setValue(shiroCookieProperties.getValue());
-        rememberMeCookie.setVersion(shiroCookieProperties.getVersion());
-        rememberMeCookie.setHttpOnly(shiroCookieProperties.isHttpOnly());
-        rememberMeCookie.setSecure(shiroCookieProperties.isSecure());
-        return rememberMeCookie;
-    }
+//    @Bean
+//    @ConditionalOnMissingBean(Cookie.class)
+//    public Cookie sessionIdCookie(){
+//        SimpleCookie sessionIdCookie = new SimpleCookie();
+//        sessionIdCookie.setName("JSESSID");
+////        rememberMeCookie.setName(shiroSignInProperties.getRememberMeParam());
+////        rememberMeCookie.setMaxAge(shiroCookieProperties.getMaxAge());
+////        rememberMeCookie.setValue(shiroCookieProperties.getValue());
+////        rememberMeCookie.setVersion(shiroCookieProperties.getVersion());
+////        rememberMeCookie.setHttpOnly(shiroCookieProperties.isHttpOnly());
+////        rememberMeCookie.setSecure(shiroCookieProperties.isSecure());
+//        return sessionIdCookie;
+//    }
 
-    @Bean
-    @ConditionalOnMissingBean(RememberMeManager.class)
-    public RememberMeManager rememberMeManager(Cookie cookie){
-        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-        cookieRememberMeManager.setCookie(cookie);
-        cookieRememberMeManager.setCipherService(cipherService);
-        if (shiroCookieProperties.getCipherKey() != null){
-            cookieRememberMeManager.setCipherKey(shiroCookieProperties.getCipherKey().getBytes());
-        }else {
-            if (shiroCookieProperties.getEncryptionCipherKey() != null){
-                cookieRememberMeManager.setEncryptionCipherKey(shiroCookieProperties.getEncryptionCipherKey().getBytes());
-            }
-            if (shiroCookieProperties.getDecryptionCipherKey() != null){
-                cookieRememberMeManager.setDecryptionCipherKey(shiroCookieProperties.getDecryptionCipherKey().getBytes());
-            }
-        }
-        cookieRememberMeManager.setSerializer(serializer);
-        return cookieRememberMeManager;
-    }
+//    @Bean
+//    @ConditionalOnMissingBean(RememberMeManager.class)
+//    public RememberMeManager rememberMeManager(Cookie cookie){
+//        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+//        cookieRememberMeManager.setCookie(cookie);
+//        cookieRememberMeManager.setCipherService(cipherService);
+//        if (shiroCookieProperties.getCipherKey() != null){
+//            cookieRememberMeManager.setCipherKey(shiroCookieProperties.getCipherKey().getBytes());
+//        }else {
+//            if (shiroCookieProperties.getEncryptionCipherKey() != null){
+//                cookieRememberMeManager.setEncryptionCipherKey(shiroCookieProperties.getEncryptionCipherKey().getBytes());
+//            }
+//            if (shiroCookieProperties.getDecryptionCipherKey() != null){
+//                cookieRememberMeManager.setDecryptionCipherKey(shiroCookieProperties.getDecryptionCipherKey().getBytes());
+//            }
+//        }
+//        cookieRememberMeManager.setSerializer(serializer);
+//        return cookieRememberMeManager;
+//    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -189,11 +190,13 @@ public class ShiroAutoConfiguration {
 
     @Bean
     @DependsOn(value = {"cacheManager", "sessionDAO"})
-    public WebSessionManager sessionManager(CacheManager cacheManager, SessionDAO sessionDAO){
+    public DefaultWebSessionManager sessionManager(CacheManager cacheManager, SessionDAO sessionDAO){
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setCacheManager(cacheManager);
         sessionManager.setGlobalSessionTimeout(shiroSessionProperties.getGlobalSessionTimeout());
         sessionManager.setSessionDAO(sessionDAO);
+//        sessionManager.setSessionIdCookie(cookie);
+        sessionManager.setSessionIdCookieEnabled(true);
         sessionManager.setSessionListeners(listeners);
 
         return sessionManager;

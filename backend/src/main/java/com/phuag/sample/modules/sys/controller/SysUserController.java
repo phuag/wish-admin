@@ -3,6 +3,7 @@ package com.phuag.sample.modules.sys.controller;
 import com.github.pagehelper.PageInfo;
 import com.phuag.sample.common.config.Constants;
 import com.phuag.sample.common.model.ResponseMessage;
+import com.phuag.sample.common.utils.DTOUtils;
 import com.phuag.sample.modules.sys.domain.SysMenu;
 import com.phuag.sample.modules.sys.domain.SysUser;
 import com.phuag.sample.modules.sys.model.SysUserDetail;
@@ -10,6 +11,7 @@ import com.phuag.sample.modules.sys.model.SysUserForm;
 import com.phuag.sample.modules.sys.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -55,10 +57,12 @@ public class SysUserController {
         Subject subject = SecurityUtils.getSubject();
         SysUser principal = (SysUser) subject.getPrincipal();
         log.debug("get principal @" + principal.toString());
-        SysUserDetail sysUserDetail = sysUserService.fillOfficeInfo(principal);
+        SysUserDetail sysUserDetail = DTOUtils.map(principal,SysUserDetail.class);
+        sysUserDetail = sysUserService.fillOfficeInfo(sysUserDetail);
         return new ResponseEntity<>(sysUserDetail, HttpStatus.OK);
     }
 
+    @RequiresPermissions("user")
     @PostMapping("/myMenu")
     public ResponseEntity<List<SysMenu>> menu() {
         SysUser prinvipal = (SysUser) SecurityUtils.getSubject().getPrincipal();
